@@ -7,7 +7,7 @@
 
 from flask import Blueprint, request, jsonify
 from flask_cors import CORS
-from utils import Node, Relationship, propChecker, propFilter
+from .utils import Node, Relationship, propChecker, propFilter
 
 api = Blueprint("client", __name__)
 cors = CORS(api)

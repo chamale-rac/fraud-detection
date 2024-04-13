@@ -6,7 +6,7 @@
 """
 from flask import Blueprint, request, jsonify
 from flask_cors import CORS
-from utils import Node, propChecker
+from .utils import Node, propChecker
 
 api = Blueprint("bank", __name__)
 cors = CORS(api)

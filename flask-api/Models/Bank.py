@@ -8,7 +8,7 @@ from flask import Blueprint, request
 from flask_cors import CORS
 from utils import Node, checker
 
-api = Blueprint('bank', __name__)
+api = Blueprint("bank", __name__)
 cors = CORS(api)
 
 BankProperties = {

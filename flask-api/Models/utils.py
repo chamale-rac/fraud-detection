@@ -17,8 +17,14 @@ class Node:
         return conn.run(query)
 
     def merge(self):
-        query = f"MERGE (n:{self.label} {self.properties})"
-        return conn.run(query)
+        query = f"""
+        MERGE (n:{self.label} {self.properties})
+        ON CREATE SET n.uuid = '{self.uuid}'
+        RETURN n.uuid as uuid
+        """
+        result = conn.run(query)
+        self.uuid = result[0]['uuid']
+        return result
 
     def match(self):
         query = f"MATCH (n:{self.label} {self.properties}) RETURN n"

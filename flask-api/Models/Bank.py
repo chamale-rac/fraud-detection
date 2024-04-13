@@ -4,9 +4,9 @@
 @date 4/12/2024
 @brief This file contains the Bank model and its methods.
 """
-from flask import Blueprint, request
+from flask import Blueprint, request, jsonify
 from flask_cors import CORS
-from utils import Node, checker
+from utils import Node, propChecker
 
 api = Blueprint("bank", __name__)
 cors = CORS(api)
@@ -22,23 +22,32 @@ BankProperties = {
 
 @api.route('/zzz', methods=['GET'])
 def bank():
-    return 'Response from Bank model'
+    return jsonify({
+        'message': 'Response from Bank model'
+    }), 200
 
 
 @api.route('/new', methods=['POST'])
 def createBank():
     data = request.get_json()
 
-    valid, message = checker(BankProperties, data)
+    valid, message = propChecker(BankProperties, data)
 
     if not valid:
-        return message, 400
+        return jsonify({
+            'message': message
+        }), 400
 
-    newBank = Node('Bank', data)
+    newBank = Node("Bank", data)
 
     creation = newBank.create()
 
     if not creation:
-        return 'Failed to create bank', 500
+        return jsonify({
+            'message': 'Error creating bank'
+        }), 500
 
-    return 'Bank created successfully', 201
+    return jsonify({
+        'message': 'Bank created successfully',
+        'uuid': newBank.uuid
+    }), 201

@@ -13,7 +13,7 @@ class Node:
     def create(self):
         properties = self.properties
         properties['uuid'] = self.uuid
-        query = f"CREATE (n:{self.label} {self.properties})"
+        query = f"CREATE (n:{self.label} {dict2Cypher(properties)})"
         return conn.run(query)
 
     def merge(self):
@@ -60,12 +60,16 @@ def propChecker(fields: dict, data: dict):
         expected_type, description, required = value
         if key not in data.keys():
             if required:
-                return f"Missing required key: {key}, which is the {description}"
+                return False, f"Missing required key: {key}, which is the {description}"
         else:
             if not isinstance(data[key], expected_type):
-                return f"Incorrect type for key {key} ({description}): Expected {expected_type.__name__}, got {type(data[key]).__name__}"
-    return True
+                return False, f"Incorrect type for key {key} ({description}): Expected {expected_type.__name__}, got {type(data[key]).__name__}"
+    return True, "All properties are valid"
 
 
 def propFilter(fields: dict, filter: list):
     return {k: v for k, v in fields.items() if k in filter}
+
+
+def dict2Cypher(properties: dict):
+    return '{' + ', '.join(f"{k}: '{v}'" for k, v in properties.items()) + '}'

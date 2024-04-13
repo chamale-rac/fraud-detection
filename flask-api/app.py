@@ -22,7 +22,7 @@ app.register_blueprint(client_api, url_prefix='/client')
 
 @app.route('/zzz', methods=['GET'])
 def zzz():
-    return 'Hello, World!'
+    return 'Connection successful', 200
 
 
 if __name__ == '__main__':

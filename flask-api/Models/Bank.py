@@ -17,6 +17,7 @@ BankProperties = {
     'estimated_value':  (int, 'Estimated value of the bank', True),
     'established':  (int, 'Year the bank was established', True),
     'category':  (str, 'Category of the bank', True),
+    'legal_entity':  (str, 'Legal entity of the bank', True),
 }
 
 
@@ -40,12 +41,12 @@ def createBank():
 
     newBank = Node("Bank", data)
 
-    creation = newBank.create()
+    response = newBank.create()
 
-    if not creation:
+    if not response["success"]:
         return jsonify({
-            'message': 'Error creating bank'
-        }), 500
+            'message': f'Failed to create bank with error: {response["message"]}'
+        }), 400
 
     return jsonify({
         'message': 'Bank created successfully',

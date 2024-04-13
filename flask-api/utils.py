@@ -18,20 +18,24 @@ class Node:
 
     def merge(self):
         query = f"""
-        MERGE (n:{self.label} {self.properties})
+        MERGE (n:{self.label} {dict2Cypher(self.properties)})
         ON CREATE SET n.uuid = '{self.uuid}'
         RETURN n.uuid as uuid
         """
-        result = conn.run(query)
-        self.uuid = result[0]['uuid']
-        return result
+        response = conn.run(query)
+        self.uuid = response["response"][0]['uuid']
+        return response
 
     def match(self):
-        query = f"MATCH (n:{self.label} {self.properties}) RETURN n"
+        query = f"MATCH (n:{self.label} {dict2Cypher(self.properties)}) RETURN n"
         return conn.run(query)
 
     def delete(self):
         query = f"MATCH (n:{self.label} {self.properties}) DELETE n"
+        return conn.run(query)
+
+    def getAll(self):
+        query = f"MATCH (n:{self.label}) RETURN n"
         return conn.run(query)
 
 
@@ -73,3 +77,9 @@ def propFilter(fields: dict, filter: list):
 
 def dict2Cypher(properties: dict):
     return '{' + ', '.join(f"{k}: '{v}'" for k, v in properties.items()) + '}'
+
+
+def node2Dict(node):
+    node_dict = {prop: node[prop] for prop in node.keys()}
+    node_dict['labels'] = list(node.labels)
+    return node_dict

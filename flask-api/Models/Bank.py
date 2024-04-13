@@ -6,7 +6,7 @@
 """
 from flask import Blueprint, request, jsonify
 from flask_cors import CORS
-from .utils import Node, propChecker
+from utils import Node, propChecker, node2Dict
 
 api = Blueprint("bank", __name__)
 cors = CORS(api)
@@ -52,3 +52,23 @@ def createBank():
         'message': 'Bank created successfully',
         'uuid': newBank.uuid
     }), 201
+
+# Get all banks
+
+
+@api.route('/getall', methods=['GET'])
+def allBanks():
+    allBanks = Node("Bank", {})
+    response = allBanks.getAll()
+
+    if not response["success"]:
+        return jsonify({
+            'message': f'Failed to get all banks with error: {response["message"]}'
+        }), 400
+
+    banks = [node2Dict(record['n']) for record in response["response"]]
+
+    return jsonify({
+        'message': 'All banks',
+        'banks': banks
+    }), 200

@@ -7,7 +7,7 @@
 
 from flask import Blueprint, request, jsonify
 from flask_cors import CORS
-from .utils import Node, Relationship, propChecker, propFilter
+from utils import Node, Relationship, propChecker, propFilter, node2Dict
 
 api = Blueprint("client", __name__)
 cors = CORS(api)
@@ -42,7 +42,7 @@ def client():
     }), 200
 
 
-@api.route("/new", methods=["POST"])
+@api.route("/create", methods=["POST"])
 def createClient():
     data = request.get_json()
 
@@ -122,16 +122,21 @@ def loginClient():
         "password": data["password"]
     })
 
-    result = thisClient.match()
+    response = thisClient.match()
 
-    if not result:
+    if not response["success"]:
         return jsonify({
-            "message": "Client not found"
+            "message": f"Client not found: {response['message']}",
+            "match": False
         }), 404
 
-    uuid = result[0]["n"]["uuid"]
+    user = [node2Dict(record["n"]) for record in response["response"]]
+    # Remove password from the response
+    user[0].pop("password")
 
     return jsonify({
         "message": "Client found",
-        "uuid": uuid
+        "uuid": data["uuid"],
+        "match": True,
+        "user": user
     }), 200

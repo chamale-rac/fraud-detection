@@ -5,9 +5,9 @@
 @brief This file contains the class n4jconn, which is used to connect to the Neo4j database.
 """
 
+import os
 import logging
 from dotenv import load_dotenv
-from utils import env
 from neo4j import GraphDatabase
 
 
@@ -20,9 +20,9 @@ class n4jconn:
     def __init__(self):
         load_dotenv(".env")
 
-        self._uri = env("FRAUD_DATABASE_URI")
-        self._username = env("FRAUD_DATABASE_USER")
-        self._password = env("FRAUD_DATABASE_PASSWORD")
+        self._uri = os.getenv("FRAUD_DATABASE_URI")
+        self._username = os.getenv("FRAUD_DATABASE_USER")
+        self._password = os.getenv("FRAUD_DATABASE_PASSWORD")
 
         if not all([self._uri, self._username, self._password]):
             raise ValueError("Missing necessary environment variables.")

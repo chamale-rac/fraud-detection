@@ -66,7 +66,7 @@ def createClient():
     ))
 
     thisDPI = Node("DPI", propFilter(
-        data, ["email"]
+        data, ["dpi"]
     ))
 
     thisAddress = Node("Address", propFilter(

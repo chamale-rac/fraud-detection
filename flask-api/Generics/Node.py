@@ -54,3 +54,10 @@ class Node:
     def deleteProperties(self, properties: list):
         query = f"MATCH (n:{self.label} {dict2Cypher(self.properties)}) REMOVE n.{', n.'.join(properties)} RETURN n"
         return conn.run(query)
+
+    # REQUIREMENT: Eliminación de nodos
+    # REQUIREMENT: Operación que permita eliminar 1 nodo
+    # REQUIREMENT: Operación que permita eliminar múltiples nodos al mismo tiempo
+    def delete(self):
+        query = f"MATCH (n:{self.label} {dict2Cypher(self.properties)}) DELETE n"
+        return conn.run(query)

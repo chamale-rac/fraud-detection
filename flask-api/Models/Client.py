@@ -7,7 +7,12 @@
 
 from flask import Blueprint, request, jsonify
 from flask_cors import CORS
-from utils import Node, Relationship, propChecker, propFilter, node2Dict
+from utils import propChecker, propFilter, node2Dict
+from Generics import Node, Relationship
+import uuid
+
+Node = Node.Node
+Relationship = Relationship.Relationship
 
 api = Blueprint("client", __name__)
 cors = CORS(api)
@@ -53,9 +58,39 @@ def createClient():
             "message": message
         }), 400
 
-    thisClient = Node("Client", propFilter(
-        data, ["name", "surname", "password", "birthday", "genre"]
+    thisBank = Node("Bank", {
+        "uuid": data["bank_uuid"]
+    })
+    thisBank.uuid = data["bank_uuid"]
+
+    bankExists = thisBank.match()
+    if not bankExists["success"] or len(bankExists["response"]) == 0:
+        return jsonify({
+            "message": f"Bank not found: Check the UUID provided"
+        }), 404
+
+    data["pin"] = str(uuid.uuid4())
+
+    thisDPI = Node("DPI", propFilter(
+        data, ["dpi"]
     ))
+
+    thisClient = Node("Client", propFilter(
+        data, ["name", "surname", "password", "birthday", "genre", "pin"]
+    ))
+
+    # Then merge the phone, email, dpi, address
+    thisDPI.merge()
+
+    thisClient.properties["dpi_uuid"] = thisDPI.uuid
+    thisClient.properties["bank_uuid"] = thisBank.uuid
+
+    # First create the client
+    response = thisClient.create()
+    if not response["success"]:
+        return jsonify({
+            "message": f"Failed to create client with error: {response['message']}"
+        }), 400
 
     thisPhone = Node("Phone", propFilter(
         data, ["phone"]
@@ -65,26 +100,12 @@ def createClient():
         data, ["email"]
     ))
 
-    thisDPI = Node("DPI", propFilter(
-        data, ["dpi"]
-    ))
-
     thisAddress = Node("Address", propFilter(
         data, ["street", "city", "state", "country", "postal_code"]
     ))
 
-    thisBank = Node("Bank", {
-        "uuid": data["bank_uuid"]
-    })
-    thisBank.uuid = data["bank_uuid"]
-
-    # First create the client
-    thisClient.create()
-
-    # Then merge the phone, email, dpi, address
     thisPhone.merge()
     thisEmail.merge()
-    thisDPI.merge()
     thisAddress.merge()
 
     # Now create a relationship between the client and the phone, email, dpi, address, and bank
@@ -99,6 +120,7 @@ def createClient():
 
     return jsonify({
         "message": "Client created successfully",
+        "pin": data["pin"],
         "uuid": thisClient.uuid
     }), 201
 
@@ -108,7 +130,7 @@ def loginClient():
     data = request.get_json()
 
     valid, message = propChecker({
-        "uuid": (str, "UUID of the client", True),
+        "pin": (str, "PIN of the client", True),
         "password": (str, "Password of the client", True)
     }, data)
 
@@ -118,25 +140,29 @@ def loginClient():
         }), 400
 
     thisClient = Node("Client", {
-        "uuid": data["uuid"],
+        "pin": data["pin"],
         "password": data["password"]
     })
 
     response = thisClient.match()
 
-    if not response["success"]:
+    if not response["success"] or len(response["response"]) == 0:
         return jsonify({
             "message": f"Client not found: {response['message']}",
             "match": False
         }), 404
 
-    user = [node2Dict(record["n"]) for record in response["response"]]
+    user = [node2Dict(record["n"]) for record in response["response"]][0]
     # Remove password from the response
-    user[0].pop("password")
+    user.pop("password")
+    # Remove pin from the response
+    user.pop("pin")
+
+    print(user)
 
     return jsonify({
         "message": "Client found",
-        "uuid": data["uuid"],
+        "uuid": user["uuid"],
         "match": True,
         "user": user
     }), 200

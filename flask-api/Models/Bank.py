@@ -6,12 +6,16 @@
 """
 from flask import Blueprint, request, jsonify
 from flask_cors import CORS
-from utils import Node, propChecker, node2Dict
+from utils import propChecker, node2Dict
+from Generics import Node, Relationship
+
+Node = Node.Node
+Relationship = Relationship.Relationship
 
 api = Blueprint("bank", __name__)
 cors = CORS(api)
 
-BankProperties = {
+createBankProperties = {
     'name': (str, 'Name of the bank', True),
     'country':  (str, 'Country of the bank', True),
     'estimated_value':  (int, 'Estimated value of the bank', True),
@@ -32,7 +36,7 @@ def bank():
 def createBank():
     data = request.get_json()
 
-    valid, message = propChecker(BankProperties, data)
+    valid, message = propChecker(createBankProperties, data)
 
     if not valid:
         return jsonify({

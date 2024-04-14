@@ -9,6 +9,7 @@ import os
 import logging
 from dotenv import load_dotenv
 from neo4j import GraphDatabase
+from neo4j.exceptions import ConstraintError
 
 
 class n4jconn:
@@ -45,7 +46,9 @@ class n4jconn:
             self._driver.close()
             logging.info("Driver closed.")
 
-    def query(self, query, parameters=None, db="neo4j"):
+    from neo4j.exceptions import ConstraintError
+
+    def run(self, query, parameters=None, db="neo4j"):
         """
         @fn query
         @brief This function runs a query on the database.
@@ -56,12 +59,19 @@ class n4jconn:
         if self._driver is None:
             raise RuntimeError("Driver not initialized, query cannot be run.")
 
+        success = True
+        message = "Query executed successfully"
         response = None
         try:
             with self._driver.session(database=db) as session:
                 response = list(session.run(query, parameters))
-        except Exception as e:
+        except ConstraintError as e:
+            success = False
+            message = "ConstraintError: " + str(e)
             logging.error(f"Query failed: {e}")
-            raise
+        except Exception as e:
+            success = False
+            message = "An error occurred: " + str(e)
+            logging.error(f"Query failed: {e}")
 
-        return response
+        return {"success": success, "message": message, "response": response}

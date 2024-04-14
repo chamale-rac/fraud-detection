@@ -85,7 +85,7 @@ def createClient():
     thisClient.properties["dpi_uuid"] = thisDPI.uuid
     thisClient.properties["bank_uuid"] = thisBank.uuid
 
-    # First create the client
+    # REQUIREMENT 3.1: Creación de nodos con 1 label
     response = thisClient.create()
     if not response["success"]:
         return jsonify({

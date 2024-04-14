@@ -79,6 +79,8 @@ def createBankAccount():
 
     data["open_date"] = now
 
+    # REQUIREMENT 3.2: Creación de nodos con 2+ labels
+    # REQUIREMENT 3.3: Creación de nodos con propiedades
     accountNode = Node(f"BankAccount:{data['account_type']}", propFilter(data, [
                        "account_type", "open_date", "status", "interest_rate", "currency", "balance"]))
 

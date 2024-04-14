@@ -30,9 +30,27 @@ class Node:
         return conn.run(query)
 
     def delete(self):
-        query = f"MATCH (n:{self.label} {self.properties}) DELETE n"
+        query = f"MATCH (n:{self.label} {dict2Cypher(self.properties)}) DELETE n"
         return conn.run(query)
 
     def getAll(self):
         query = f"MATCH (n:{self.label}) RETURN n"
+        return conn.run(query)
+
+    # REQUIREMENT: Operación que permita agregar 1 o más propiedades a un nodo
+    # REQUIREMENT: Operación que permita agregar 1 o más propiedades a múltiples nodos al mismo tiempo
+    def addProperties(self, properties: dict):
+        query = f"MATCH (n:{self.label} {dict2Cypher(self.properties)}) SET n += {dict2Cypher(properties)} RETURN n"
+        return conn.run(query)
+
+    # REQUIREMENT: Operación que permita realizar la actualización de 1 o más propiedades de un nodo
+    # REQUIREMENT: Operación que permita realizar la actualización de 1 o más propiedades de múltiples nodos al mismo tiempo
+    def updateProperties(self, properties: dict):
+        # Hace lo mismo que addProperties, pues si la propiedad ya existe, la actualiza
+        return self.addProperties(properties)
+
+    # REQUIREMENT: Operación que permita eliminar 1 o mas propiedades de un nodo
+    # REQUIREMENT: Operación que permita eliminar 1 o más propiedades de múltiples nodos al mismo tiempo
+    def deleteProperties(self, properties: list):
+        query = f"MATCH (n:{self.label} {dict2Cypher(self.properties)}) REMOVE n.{', n.'.join(properties)} RETURN n"
         return conn.run(query)

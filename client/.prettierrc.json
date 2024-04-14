@@ -8,5 +8,6 @@
   "jsxBracketSameLine": false,
   "bracketSpacing": true,
   "arrowParens": "avoid",
-  "object-curly-newline": "always"
+  "object-curly-newline": "always",
+  "printWidth": 150
 }

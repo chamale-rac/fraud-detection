@@ -194,14 +194,6 @@ def transfer():
         return jsonify({
             "message": "From Account does not exist: Check the provided UUID"
         }), 400
-
-    fromAccountNode = Node("Account", {"uuid": data["from_uuid"]})
-    fromAccountNode.uuid = data["from_uuid"]
-    fromAccountExists = fromAccountNode.match()
-    if not fromAccountExists["success"] or len(fromAccountExists["response"]) == 0:
-        return jsonify({
-            "message": "From Account does not exist: Check the provided UUID"
-        }), 400
     fromAccount = [node2Dict(record["n"])
                    for record in fromAccountExists["response"]][0]
 
@@ -230,6 +222,7 @@ def transfer():
     bankToAccount = Relationship(bankNode, toAccountNode, "HAS_ACCOUNT")
     bankToAccountExists = bankToAccount.matchReturnB()
 
+    print(bankFromAccountExists)
     if not bankFromAccountExists["success"] or len(bankFromAccountExists["response"]) == 0:
         return jsonify({
             "message": "From Account does not belong to any bank"
@@ -240,10 +233,10 @@ def transfer():
             "message": "To Account does not belong to any bank"
         }), 400
 
-    fromBank = [node2Dict(record["b"]
-                          for record in bankFromAccountExists["response"])][0]
-    toBank = [node2Dict(record["b"]
-                        for record in bankToAccountExists["response"])][0]
+    fromBank = [node2Dict(record["b"])
+                for record in bankFromAccountExists["response"]][0]
+    toBank = [node2Dict(record["b"])
+              for record in bankToAccountExists["response"]][0]
 
     transactionType = "Internal" if fromBank["uuid"] == toBank["uuid"] else "External"
 
@@ -275,10 +268,14 @@ def transfer():
         SET nt.balance = fa.balance - nt.amount
         SET nt.status = "Pending"
         CREATE (fa)-[:LAST_TRANSACTION]->(nt)
-        WITH nt, t
-        CASE WHEN t IS NOT NULL THEN CREATE (t)-[:NEXT]->(nt) END
-        CASE WHEN t IS NULL THEN CREATE (fa)-[:FIRST_TRANSACTION]->(nt) END
-        WITH nt
+        WITH nt, t, fa
+        FOREACH (ignoreMe IN CASE WHEN t IS NULL THEN [1] ELSE [] END |
+            CREATE (fa)-[:FIRST_TRANSACTION]->(nt)
+        )
+        FOREACH (ignoreMe IN CASE WHEN t IS NOT NULL THEN [1] ELSE [] END |
+            CREATE (t)-[:NEXT]->(nt)
+        )
+        WITH nt, fa
         MATCH (ta:Account {{uuid: "{toAccountUUID}"}})
         CREATE (fa)-[:TO]->(nt)
         CREATE (nt)-[:TO]->(ta)

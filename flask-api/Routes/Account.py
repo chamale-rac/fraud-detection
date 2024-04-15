@@ -24,6 +24,7 @@ AccountProperties = {
     "balance": (float, "Current balance of the account", True),
     "user_uuid": (str, "UUID of the account owner", True),
     "bank_uuid": (str, "UUID of the bank of the account", True),
+    "nickname": (str, "Nickname of the account", False)
 }
 
 
@@ -77,7 +78,7 @@ def createAccount():
     # REQUIREMENT 3.2: Creación de nodos con 2+ labels
     # REQUIREMENT 3.3: Creación de nodos con propiedades
     accountNode = Node(f"Account:{data['account_type']}", propFilter(data, [
-                       "account_type", "open_date", "status", "interest_rate", "currency", "balance"]))
+                       "account_type", "open_date", "status", "interest_rate", "currency", "balance", "nickname"]))
 
     accountNode.create()
 

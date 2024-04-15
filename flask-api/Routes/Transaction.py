@@ -31,9 +31,7 @@ def transaction():
 '''
 Transaction Types:
 - Cash In: Employee deposits money to a client's account
-- Cash Out: Client withdraws money from his account
 - Transfer: Client transfers money to another client's account
-- Payment: Client pays a service or product to a company
 
 Transaction Node Label
 - Transaction:<type> (e.g. Transaction:CashIn)
@@ -162,22 +160,136 @@ def cashIn():
     }), 400
 
 
-@api.route("/cash-out", methods=["POST"])
-def cashOut():
-    return jsonify({
-        "message": "Response from Transaction model"
-    }), 200
+'''
+Transfer Transaction
+'''
+TransferProperties = {
+    "from_uuid": (str, "UUID of the account that will transfer the money", True),
+    "to_uuid": (str, "UUID of the account that will receive the money", True),
+
+    "amount": (float, "Amount of money that will be transferred", True),
+    "description": (str, "Description of the transaction", True),
+}
 
 
 @api.route("/transfer", methods=["POST"])
 def transfer():
-    return jsonify({
-        "message": "Response from Transaction model"
-    }), 200
+    data = request.get_json()
 
+    valid, message = propChecker(TransferProperties, data)
+    if not valid:
+        return jsonify({
+            "message": message
+        }), 400
 
-@api.route("/payment", methods=["POST"])
-def payment():
+    fromAccountNode = Node("Account", {"uuid": data["from_uuid"]})
+    fromAccountNode.uuid = data["from_uuid"]
+    fromAccountExists = fromAccountNode.match()
+    if not fromAccountExists["success"] or len(fromAccountExists["response"]) == 0:
+        return jsonify({
+            "message": "From Account does not exist: Check the provided UUID"
+        }), 400
+
+    fromAccountNode = Node("Account", {"uuid": data["from_uuid"]})
+    fromAccountNode.uuid = data["from_uuid"]
+    fromAccountExists = fromAccountNode.match()
+    if not fromAccountExists["success"] or len(fromAccountExists["response"]) == 0:
+        return jsonify({
+            "message": "From Account does not exist: Check the provided UUID"
+        }), 400
+    fromAccount = [node2Dict(record["n"])
+                   for record in fromAccountExists["response"]][0]
+
+    toAccountNode = Node("Account", {"uuid": data["to_uuid"]})
+    toAccountNode.uuid = data["to_uuid"]
+    toAccountExists = toAccountNode.match()
+    if not toAccountExists["success"] or len(toAccountExists["response"]) == 0:
+        return jsonify({
+            "message": "To Account does not exist: Check the provided UUID"
+        }), 400
+
+    if fromAccount["balance"] < data["amount"]:
+        return jsonify({
+            "message": "Insufficient balance in From Account"
+        }), 400
+
+    # Determine if the transaction is internal or external (same bank or different bank) verifying both have the same bank
+    # bankNode->HAS_ACCOUNT->AccountNode
+    bankNode = Node("Bank", {})
+
+    # From Account
+    bankFromAccount = Relationship(bankNode, fromAccountNode, "HAS_ACCOUNT")
+    bankFromAccountExists = bankFromAccount.matchReturnB()
+
+    # To Account
+    bankToAccount = Relationship(bankNode, toAccountNode, "HAS_ACCOUNT")
+    bankToAccountExists = bankToAccount.matchReturnB()
+
+    if not bankFromAccountExists["success"] or len(bankFromAccountExists["response"]) == 0:
+        return jsonify({
+            "message": "From Account does not belong to any bank"
+        }), 400
+
+    if not bankToAccountExists["success"] or len(bankToAccountExists["response"]) == 0:
+        return jsonify({
+            "message": "To Account does not belong to any bank"
+        }), 400
+
+    fromBank = [node2Dict(record["b"]
+                          for record in bankFromAccountExists["response"])][0]
+    toBank = [node2Dict(record["b"]
+                        for record in bankToAccountExists["response"])][0]
+
+    transactionType = "Internal" if fromBank["uuid"] == toBank["uuid"] else "External"
+
+    data["transaction_type"] = transactionType
+
+    # Get the current date and time
+    now = datetime.now()
+
+    data["date"] = now
+
+    data["status"] = "Floating"
+    transactionNode = Node("Transaction:Transfer", propFilter(data, [
+        "amount", "description", "date", "status", "transaction_type"]))
+    transactionNode.create()
+
+    newTransactionUUID = transactionNode.uuid
+    fromAccountUUID = fromAccountNode.uuid
+    toAccountUUID = toAccountNode.uuid
+
+    # QUERY
+    query = f"""
+        MATCH (fa:Account {{uuid: "{fromAccountUUID}"}})
+        OPTIONAL MATCH (fa)-[r:LAST_TRANSACTION]->(t:Transaction)
+        WITH fa, r, t, CASE WHEN t IS NULL THEN 1 ELSE t.step + 1 END AS step
+        DELETE r
+        WITH fa, step, t
+        MATCH (nt:Transaction {{uuid: "{newTransactionUUID}"}})
+        SET nt.step = step
+        SET nt.balance = fa.balance - nt.amount
+        SET nt.status = "Pending"
+        CREATE (fa)-[:LAST_TRANSACTION]->(nt)
+        WITH nt, t
+        CASE WHEN t IS NOT NULL THEN CREATE (t)-[:NEXT]->(nt) END
+        CASE WHEN t IS NULL THEN CREATE (fa)-[:FIRST_TRANSACTION]->(nt) END
+        WITH nt
+        MATCH (ta:Account {{uuid: "{toAccountUUID}"}})
+        CREATE (fa)-[:TO]->(nt)
+        CREATE (nt)-[:TO]->(ta)
+        SET fa.balance = fa.balance - nt.amount
+        SET ta.balance = ta.balance + nt.amount
+        SET nt.status = "Completed"
+    """
+
+    response = conn.run(query)
+
+    if response["success"]:
+        return jsonify({
+            "message": "Transfer transaction created successfully",
+            "uuid": newTransactionUUID
+        }), 201
+
     return jsonify({
-        "message": "Response from Transaction model"
-    }), 200
+        "message": f"Failed to create transfer transaction with error: {response['message']}"
+    }), 400

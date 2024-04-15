@@ -117,7 +117,7 @@ def cashIn():
     # Employee-TO->Transaction
     # Transaction-TO->Account
 
-    data["status"] = "Pending"
+    data["status"] = "Floating"
     transactionNode = Node("Transaction:CashIn", propFilter(data, [
         "amount", "description", "date", "status"]))
     transactionNode.create()
@@ -135,14 +135,18 @@ def cashIn():
         WITH a, step, t
         MATCH (nt:Transaction {{uuid: "{newTransactionUUID}"}})
         SET nt.step = step
+        SET nt.balance = a.balance + nt.amount
+        SET nt.status = "Pending"
         CREATE (a)-[:LAST_TRANSACTION]->(nt)
         WITH nt, t
         CASE WHEN t IS NOT NULL THEN CREATE (t)-[:NEXT]->(nt) END
+        CASE WHEN t IS NULL THEN CREATE (a)-[:FIRST_TRANSACTION]->(nt) END
         WITH nt
         MATCH (e:Employee {{uuid: "{employeeBankUUID}"}})
         CREATE (e)-[:TO]->(nt)
         CREATE (nt)-[:TO]->(a)
         SET a.balance = a.balance + nt.amount
+        SET nt.status = "Completed"
     """
 
     response = conn.run(query)
@@ -156,3 +160,24 @@ def cashIn():
     return jsonify({
         "message": f"Failed to create cash in transaction with error: {response['message']}"
     }), 400
+
+
+@api.route("/cash-out", methods=["POST"])
+def cashOut():
+    return jsonify({
+        "message": "Response from Transaction model"
+    }), 200
+
+
+@api.route("/transfer", methods=["POST"])
+def transfer():
+    return jsonify({
+        "message": "Response from Transaction model"
+    }), 200
+
+
+@api.route("/payment", methods=["POST"])
+def payment():
+    return jsonify({
+        "message": "Response from Transaction model"
+    }), 200

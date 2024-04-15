@@ -8,10 +8,11 @@
 from flask import Flask
 from flask_cors import CORS
 
-from Models.Bank import api as bank_api
-from Models.Client import api as client_api
-from Models.Account import api as account_api
-from Models.Employee import api as employee_api
+from Routes.Bank import api as bank_api
+from Routes.Client import api as client_api
+from Routes.Account import api as account_api
+from Routes.Employee import api as employee_api
+from Routes.Transaction import api as transaction_api
 
 app = Flask(__name__)
 app.config['CORS_HEADERS'] = 'Content-Type'
@@ -22,6 +23,7 @@ app.register_blueprint(bank_api, url_prefix='/bank')
 app.register_blueprint(client_api, url_prefix='/client')
 app.register_blueprint(account_api, url_prefix='/account')
 app.register_blueprint(employee_api, url_prefix='/employee')
+app.register_blueprint(transaction_api, url_prefix='/transaction')
 
 
 @app.route('/zzz', methods=['GET'])

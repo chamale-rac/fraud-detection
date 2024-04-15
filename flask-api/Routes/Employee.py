@@ -113,7 +113,7 @@ def createEmployee():
         Relationship(thisEmployee, thisEmail, "HAS_EMAIL").create()
         Relationship(thisEmployee, thisDPI, "HAS_DPI").create()
         Relationship(thisEmployee, thisAddress, "HAS_ADDRESS").create()
-        Relationship(thisEmployee, thisBank, "WORKS_AT", propFilter(
+        Relationship(thisBank, thisEmployee, "HAS_EMPLOYEE", propFilter(
             data, ["position", "salary", "since"])).create()
     except Exception as e:
         return str(e), 500

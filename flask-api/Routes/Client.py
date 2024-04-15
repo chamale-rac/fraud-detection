@@ -129,7 +129,7 @@ def createClient():
         Relationship(thisClient, thisEmail, "HAS_EMAIL").create()
         Relationship(thisClient, thisDPI, "HAS_DPI").create()
         Relationship(thisClient, thisAddress, "HAS_ADDRESS").create()
-        Relationship(thisClient, thisBank, "HAS_BANK").create()
+        Relationship(thisBank, thisClient, "HAS_CLIENT").create()
         now = datetime.now()
 
         Relationship(thisEmployee, thisClient, "REGISTER_CLIENT", {

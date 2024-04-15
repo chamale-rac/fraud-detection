@@ -73,9 +73,12 @@ def createEmployee():
         data, ["dpi"]
     ))
 
+    # Add work status
+    data["status"] = "Active"
+
     thisEmployee = Node("Employee", propFilter(
         data, ["name", "surname", "password", "birthday", "genre",
-               "pin"]
+               "pin", "status"]
     ))
 
     thisDPI.merge()
@@ -150,6 +153,14 @@ def loginEmployee():
         }), 404
 
     user = [node2Dict(record["n"]) for record in response["response"]][0]
+
+    # Check status
+    if user["status"] != "Active":
+        return jsonify({
+            "message": "Bank employee is not active",
+            "match": False
+        }), 401
+
     user.pop("password")
     user.pop("pin")
 

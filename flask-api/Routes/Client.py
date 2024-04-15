@@ -39,6 +39,9 @@ createClientProperties = {
 
     "bank_uuid": (str, "UUID of the bank of the client", True),
     "employee_uuid": (str, "UUID of the employee that created the client", True),
+
+    "work_related_tags": (list, "List of tags related to the client", False),
+    "declared_income": (float, "Declared income of the client", False),
 }
 
 
@@ -81,6 +84,13 @@ def createClient():
             "message": f"Employee not found: Check the UUID provided"
         }), 404
 
+    employeeBank = Relationship(thisBank, thisEmployee, "HAS_EMPLOYEE")
+    employeeBankExists = employeeBank.match()
+    if not employeeBankExists["success"] or len(employeeBankExists["response"]) == 0:
+        return jsonify({
+            "message": f"Employee is not related to the bank"
+        }), 404
+
     data["pin"] = str(uuid.uuid4())
 
     thisDPI = Node("DPI", propFilter(
@@ -91,7 +101,7 @@ def createClient():
     data["active"] = True
     thisClient = Node("Client", propFilter(
         data, ["name", "surname", "password",
-               "birthday", "genre", "pin", "active"]
+               "birthday", "genre", "pin", "active", "work_related_tags", "declared_income"]
     ))
 
     # Then merge the phone, email, dpi, address

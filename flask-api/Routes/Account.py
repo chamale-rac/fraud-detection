@@ -19,7 +19,6 @@ cors = CORS(api)
 
 AccountProperties = {
     "account_type": (str, "Type of the bank account [Saving, Checking]", True),
-    "status": (str, "Current status of the account [Active, Closed, Frozen]", True),
     "interest_rate": (float, "Interest rate of the account", True),
     "currency": (str, "Currency of the account [USD, EUR, etc.]", True),
     "balance": (float, "Current balance of the account", True),
@@ -62,11 +61,7 @@ def createAccount():
             "message": "Bank does not exist: Check the provided UUID"
         }), 400
 
-    # Status: Active, Closed, Frozen
-    if data["status"] not in ["Active", "Closed", "Frozen"]:
-        return jsonify({
-            "message": "Invalid status, expected Active, Closed, or Frozen"
-        }), 400
+    data["status"] = "Active"
 
     # Account type: Saving, Checking
     if data["account_type"] not in ["Saving", "Checking"]:

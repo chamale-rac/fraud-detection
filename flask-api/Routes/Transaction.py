@@ -50,7 +50,7 @@ CashInProperties = {
 }
 
 
-@api.route("/cash-in", methods=["POST"])
+@api.route("/cash_in", methods=["POST"])
 def cashIn():
     data = request.get_json()
 
@@ -104,7 +104,7 @@ def cashIn():
     accountClientExists = accountClient.match()
     if not accountClientExists["success"] or len(accountClientExists["response"]) == 0:
         return jsonify({
-            "message": "Account does not belong to the client"
+            "message": "Account does not belong to the client or does not exist"
         }), 400
 
     # Get the current date and time
@@ -136,10 +136,15 @@ def cashIn():
         SET nt.balance = a.balance + nt.amount
         SET nt.status = "Pending"
         CREATE (a)-[:LAST_TRANSACTION]->(nt)
-        WITH nt, t
-        CASE WHEN t IS NOT NULL THEN CREATE (t)-[:NEXT]->(nt) END
-        CASE WHEN t IS NULL THEN CREATE (a)-[:FIRST_TRANSACTION]->(nt) END
-        WITH nt
+        WITH nt, t, a
+        // Apply both relationship conditions in one WITH block
+        FOREACH(ignoreMe IN CASE WHEN t IS NULL THEN [1] ELSE [] END |
+            CREATE (a)-[:FIRST_TRANSACTION]->(nt)
+        )
+        FOREACH(ignoreMe IN CASE WHEN t IS NOT NULL THEN [1] ELSE [] END |
+            CREATE (t)-[:NEXT]->(nt)
+        )
+        WITH nt, a
         MATCH (e:Employee {{uuid: "{employeeBankUUID}"}})
         CREATE (e)-[:TO]->(nt)
         CREATE (nt)-[:TO]->(a)

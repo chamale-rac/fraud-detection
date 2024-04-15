@@ -75,3 +75,32 @@ class n4jconn:
             logging.error(f"Query failed: {e}")
 
         return {"success": success, "message": message, "response": response}
+
+    def transaction(self, queries, db="neo4j"):
+        """
+        @fn transaction
+        @brief This function runs a transaction on the database.
+        @param queries The queries to run.
+        @param db The database to run the transaction on.
+        """
+        if self._driver is None:
+            raise RuntimeError(
+                "Driver not initialized, transaction cannot be run.")
+
+        success = True
+        message = "Transaction executed successfully"
+        response = None
+        try:
+            with self._driver.session(database=db) as session:
+                response = session.write_transaction(
+                    lambda tx: [tx.run(query) for query in queries])
+        except ConstraintError as e:
+            success = False
+            message = "ConstraintError: " + str(e)
+            logging.error(f"Transaction failed: {e}")
+        except Exception as e:
+            success = False
+            message = "An error occurred: " + str(e)
+            logging.error(f"Transaction failed: {e}")
+
+        return {"success": success, "message": message, "response": response}

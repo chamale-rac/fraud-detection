@@ -295,3 +295,135 @@ def transfer():
     return jsonify({
         "message": f"Failed to create transfer transaction with error: {response['message']}"
     }), 400
+
+
+'''
+Cash Out Transaction
+'''
+CashOutProperties = {
+    "client_uuid": (str, "UUID of the client that will withdraw the money", True),
+    "employee_uuid": (str, "UUID of the employee that will process the withdrawal", True),
+    "account_uuid": (str, "UUID of the account where the money will be withdrawn from", True),
+
+    "amount": (float, "Amount of money that will be withdrawn", True),
+    "description": (str, "Description of the transaction", True),
+}
+
+
+@api.route("/cash_out", methods=["POST"])
+def cashOut():
+    data = request.get_json()
+
+    # Checking Validity of the Model
+    valid, message = propChecker(CashOutProperties, data)
+
+    if not valid:
+        return jsonify({
+            "message": message
+        }), 400
+
+    # Similar checks for client, employee, bank, and account as in cashIn function...
+    clientNode = Node("Client", {"uuid": data["client_uuid"]})
+    clientNode.uuid = data["client_uuid"]
+    clientExists = clientNode.match()
+    if not clientExists["success"] or len(clientExists["response"]) == 0:
+        return jsonify({
+            "message": "Client does not exist: Check the provided UUID"
+        }), 400
+    client = [node2Dict(record["n"]) for record in clientExists["response"]][0]
+
+    # Check if the account balance is sufficient
+    accountNode = Node("Account", {"uuid": data["account_uuid"]})
+    accountNode.uuid = data["account_uuid"]
+    accountExists = accountNode.match()
+    if not accountExists["success"] or len(accountExists["response"]) == 0:
+        return jsonify({
+            "message": "Account does not exist: Check the provided UUID"
+        }), 400
+    account = [node2Dict(record["n"])
+               for record in accountExists["response"]][0]
+
+    employeeNode = Node("Employee", {"uuid": data["employee_uuid"]})
+    employeeNode.uuid = data["employee_uuid"]
+    employeeExists = employeeNode.match()
+    if not employeeExists["success"] or len(employeeExists["response"]) == 0:
+        return jsonify({
+            "message": "Employee does not exist: Check the provided UUID"
+        }), 400
+
+    bankNode = Node("Bank", {"uuid": client["bank_uuid"]})
+    bankNode.uuid = client["bank_uuid"]
+    bankExists = bankNode.match()
+    if not bankExists["success"] or len(bankExists["response"]) == 0:
+        return jsonify({
+            "message": "Bank does not exist: Check the provided UUID"
+        }), 400
+
+    # Check if the employee belongs to the bank
+    employeeBank = Relationship(bankNode, employeeNode, "HAS_EMPLOYEE")
+    employeeBankExists = employeeBank.match()
+    if not employeeBankExists["success"] or len(employeeBankExists["response"]) == 0:
+        return jsonify({
+            "message": "Employee does not belong to the bank"
+        }), 400
+    if account["balance"] < data["amount"]:
+        return jsonify({
+            "message": "Insufficient balance in the account"
+        }), 400
+
+    # Get the current date and time
+    now = datetime.now()
+
+    data["date"] = now
+
+    # Employee-TO->Transaction
+    # Transaction-TO->Account
+
+    data["status"] = "Floating"
+    transactionNode = Node("Transaction:CashOut", propFilter(data, [
+        "amount", "description", "date", "status"]))
+    transactionNode.create()
+
+    newTransactionUUID = transactionNode.uuid
+    bankAccountUUID = accountNode.uuid
+    employeeBankUUID = employeeNode.uuid
+
+    # QUERY
+    query = f"""
+        MATCH (a:Account {{uuid: "{bankAccountUUID}"}})
+        OPTIONAL MATCH (a)-[r:LAST_TRANSACTION]->(t:Transaction)
+        WITH a, r, t, CASE WHEN t IS NULL THEN 1 ELSE t.step + 1 END AS step
+        DELETE r
+        WITH a, step, t
+        MATCH (nt:Transaction {{uuid: "{newTransactionUUID}"}})
+        SET nt.step = step
+        SET nt.balance = a.balance - nt.amount
+        SET nt.status = "Pending"
+        CREATE (a)-[:LAST_TRANSACTION]->(nt)
+        WITH nt, t, a
+        // Apply both relationship conditions in one WITH block
+        FOREACH(ignoreMe IN CASE WHEN t IS NULL THEN [1] ELSE [] END |
+            CREATE (a)-[:FIRST_TRANSACTION]->(nt)
+        )
+        FOREACH(ignoreMe IN CASE WHEN t IS NOT NULL THEN [1] ELSE [] END |
+            CREATE (t)-[:NEXT]->(nt)
+        )
+        WITH nt, a
+        MATCH (e:Employee {{uuid: "{employeeBankUUID}"}})
+        CREATE (a)-[:TO]->(nt)
+        CREATE (nt)-[:TO]->(e)
+        SET a.balance = a.balance - nt.amount
+        SET nt.status = "Completed"
+    """
+
+    response = conn.run(query)
+
+    if response["success"]:
+        return jsonify({
+            "message": "Cash Out transaction created successfully",
+            "uuid": newTransactionUUID
+        }), 201
+
+    return jsonify({
+        "message": f"Failed to create cash out transaction with error: {response['message']}"
+    }), 400

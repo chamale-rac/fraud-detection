@@ -1,8 +1,8 @@
 """
-@file BankAccount.py
+@file Account.py
 @author Samuel Chamalé
 @date 4/12/2024
-@brief This file contains the BankAccount model and its methods.
+@brief This file contains the Account model and its methods.
 """
 
 from flask import Blueprint, request, jsonify
@@ -14,10 +14,10 @@ from datetime import datetime
 Node = Node.Node
 Relationship = Relationship.Relationship
 
-api = Blueprint("bank_account", __name__)
+api = Blueprint("account", __name__)
 cors = CORS(api)
 
-BankAccountProperties = {
+AccountProperties = {
     "account_type": (str, "Type of the bank account [Saving, Checking]", True),
     "status": (str, "Current status of the account [Active, Closed, Frozen]", True),
     "interest_rate": (float, "Interest rate of the account", True),
@@ -31,15 +31,15 @@ BankAccountProperties = {
 @api.route("/zzz", methods=["GET"])
 def bank_account():
     return jsonify({
-        "message": "Response from BankAccount model"
+        "message": "Response from Account model"
     }), 200
 
 
 @api.route("/create", methods=["POST"])
-def createBankAccount():
+def createAccount():
     data = request.get_json()
 
-    valid, message = propChecker(BankAccountProperties, data)
+    valid, message = propChecker(AccountProperties, data)
 
     if not valid:
         return jsonify({
@@ -81,14 +81,14 @@ def createBankAccount():
 
     # REQUIREMENT 3.2: Creación de nodos con 2+ labels
     # REQUIREMENT 3.3: Creación de nodos con propiedades
-    accountNode = Node(f"BankAccount:{data['account_type']}", propFilter(data, [
+    accountNode = Node(f"Account:{data['account_type']}", propFilter(data, [
                        "account_type", "open_date", "status", "interest_rate", "currency", "balance"]))
 
     accountNode.create()
 
     try:
-        Relationship(userNode, accountNode, "OWNS").create()
-        Relationship(bankNode, accountNode, "HAS").create()
+        Relationship(userNode, accountNode, "OWNS_ACCOUNT").create()
+        Relationship(bankNode, accountNode, "HAS_ACCOUNT").create()
     except Exception as e:
         return jsonify({
             "message": f"Failed to create relationship with error: {str(e)}"

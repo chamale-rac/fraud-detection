@@ -14,6 +14,5 @@ cors = CORS(api)
 
 CashInTransactionProperties = {
     "amount": (float, "Amount of the transaction", True),
-    "fraud": (bool, "Fraud status of the transaction", True),
     "date": (str, "Date of the transaction", True),
 }

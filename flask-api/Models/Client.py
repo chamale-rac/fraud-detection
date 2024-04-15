@@ -87,11 +87,11 @@ def createClient():
         data, ["dpi"]
     ))
 
-    # Add client status
-    data["status"] = "Active"
+    # Add client active
+    data["active"] = True
     thisClient = Node("Client", propFilter(
         data, ["name", "surname", "password",
-               "birthday", "genre", "pin", "status"]
+               "birthday", "genre", "pin", "active"]
     ))
 
     # Then merge the phone, email, dpi, address
@@ -174,8 +174,8 @@ def loginClient():
 
     user = [node2Dict(record["n"]) for record in response["response"]][0]
 
-    # Check status
-    if user["status"] != "Active":
+    # Check active
+    if user["active"] != True:
         return jsonify({
             "message": "Client is not active",
             "match": False

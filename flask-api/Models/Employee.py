@@ -73,12 +73,12 @@ def createEmployee():
         data, ["dpi"]
     ))
 
-    # Add work status
-    data["status"] = "Active"
+    # Add work active
+    data["active"] = True
 
     thisEmployee = Node("Employee", propFilter(
         data, ["name", "surname", "password", "birthday", "genre",
-               "pin", "status"]
+               "pin", "active"]
     ))
 
     thisDPI.merge()
@@ -154,8 +154,8 @@ def loginEmployee():
 
     user = [node2Dict(record["n"]) for record in response["response"]][0]
 
-    # Check status
-    if user["status"] != "Active":
+    # Check active
+    if user["active"] != True:
         return jsonify({
             "message": "Bank employee is not active",
             "match": False

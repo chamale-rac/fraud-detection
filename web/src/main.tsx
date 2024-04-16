@@ -1,11 +1,12 @@
-import React from "react"
-import ReactDOM from "react-dom/client"
-import { createBrowserRouter, RouterProvider } from "react-router-dom"
-import App from "./App"
-import Login from "./pages/Login"
-import EmployeeDashboard from "./pages/EmployeeDashboard"
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import App from './App'
+import Login from './pages/Login'
+import EmployeeDashboard from './pages/EmployeeDashboard'
+import CreateAccount from './pages/CreateAccount'
 import CreateClient from "./pages/CreateClient"
-import "./index.css"
+import './index.css'
 
 const router = createBrowserRouter([
   {
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
   {
     path: "/client/create",
     element: <CreateClient />,
+  },
+  {
+    path: '/client/account/create',
+    element: <CreateAccount />,
   },
 ])
 

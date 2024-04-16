@@ -69,11 +69,20 @@ export default function CreateAccount() {
   })
 
   function onSubmit(data: z.infer<typeof NewAccountSchema>) {
+    const uuid = localStorage.getItem('uuid')
+    const bank_uuid = localStorage.getItem('bank_uuid')
+
+    const newData = {
+      ...data,
+      user_uuid: uuid,
+      bank_uuid: bank_uuid,
+    }
+
     toast({
       title: 'You submitted the following values:',
       description: (
         <pre className='mt-2 w-[340px] rounded-md bg-slate-950 p-4'>
-          <code className='text-white'>{JSON.stringify(data, null, 2)}</code>
+          <code className='text-white'>{JSON.stringify(newData, null, 2)}</code>
         </pre>
       ),
     })
@@ -85,7 +94,7 @@ export default function CreateAccount() {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify(newData),
     })
       .then((res) => {
         console.log(res)
@@ -117,9 +126,9 @@ export default function CreateAccount() {
       <div className='flex flex-row items-center justify-center min-h-screen'>
         <Card className='w-[350px]'>
           <CardHeader>
-            <CardTitle>Create project</CardTitle>
+            <CardTitle>Create Account</CardTitle>
             <CardDescription>
-              Deploy your new project in one-click.
+              Create a new account for the user.
             </CardDescription>
           </CardHeader>
           <CardContent>

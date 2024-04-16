@@ -6,16 +6,16 @@ import tailwindcss from 'tailwindcss'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  server: {
-    host: '0.0.0.0',
-    port: 4000,
-  },
+  // server: {
+  //   host: '0.0.0.0',
+  //   port: 4000,
+  // },
   plugins: [
     react(),
-    basicSsl({
-      name: 'localhost',
-      domains: ['localhost'],
-    }),
+    // basicSsl({
+    //   name: 'localhost',
+    //   domains: ['localhost'],
+    // }),
   ],
   css: {
     postcss: {

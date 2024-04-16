@@ -9,20 +9,49 @@ function Login() {
   const { toast } = useToast()
 
   const [loading, setLoading] = useState(false)
-  const [admin, setAdmin] = useState(false)
-  const [email, setEmail] = useState('')
+  const [employee, setEmployee] = useState(false)
   const [password, setPassword] = useState('')
+
+  const [pin, setPin] = useState('')
 
   const login = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
-    console.log('LOGIN')
-    console.log('email:', email)
-    console.log('password:', password)
-    await wait(3000)
-    toast({ title: 'Welcome back! 🎉', type: 'success' })
+
+    const url = employee ? '/employee/login' : '/client/login'
+
+    await fetch(`${import.meta.env.VITE_BASE_URL}/${url}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ pin, password }),
+    })
+      .then(res => {
+        console.log(res)
+        if (res.ok) {
+          return res.json()
+        }
+        return res.json().then(error => {
+          throw new Error(error.message)
+        })
+      })
+      .then(data => {
+        // Save token to local storage
+        localStorage.setItem('user', data.user)
+        // Redirect to the appropriate dashboard
+        const navigateTo = employee ? '/employee/dashboard' : '/client/dashboard'
+        navigate(navigateTo)
+      })
+      .catch(error => {
+        toast({
+          title: 'Error',
+          description: error.message,
+          variant: 'destructive',
+        })
+      })
+
     setLoading(false)
-    navigate('/app/dashboard')
   }
 
   return (
@@ -36,18 +65,18 @@ function Login() {
           Sign up
         </Link>
         <section className="flex gap-[0.5rem] mb-[1rem]">
-          <label htmlFor="admin" className="my-auto mr-0.5rem h-fit">
-            Admin
+          <label htmlFor="employee" className="my-auto mr-0.5rem h-fit">
+            Employee
           </label>
-          <Switch id="admin" checked={admin} onCheckedChange={checked => setAdmin(checked)} />
+          <Switch id="employee" checked={employee} onCheckedChange={checked => setEmployee(checked)} />
         </section>
         <form onSubmit={login} className="flex flex-col gap-[1rem] h-fit w-full my-auto mx-0 p-0">
           <article className="flex flex-col gap-[0.5rem]">
-            <label htmlFor="email">Email</label>
+            <label htmlFor="pin">Pin</label>
             <input
-              onChange={e => setEmail(e.target.value)}
-              id="email"
-              type="email"
+              onChange={e => setPin(e.target.value)}
+              id="pin"
+              type="text"
               className="w-full m-0 py-[0.5rem] px-[0.75rem] rounded border-stone-100 border-[1px] border-solid bg-stone-100 focus:outline-none"
               required
               disabled={loading}

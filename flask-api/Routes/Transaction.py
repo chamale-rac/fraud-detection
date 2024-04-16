@@ -32,6 +32,7 @@ def transaction():
 Transaction Types:
 - Cash In: Employee deposits money to a client's account
 - Transfer: Client transfers money to another client's account
+- Cash Out: Client withdraws money from their account
 
 Transaction Node Label
 - Transaction:<type> (e.g. Transaction:CashIn)

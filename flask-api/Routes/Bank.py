@@ -32,7 +32,7 @@ def bank():
     }), 200
 
 
-@api.route('/new', methods=['POST'])
+@api.route('/create', methods=['POST'])
 def createBank():
     data = request.get_json()
 
@@ -60,7 +60,7 @@ def createBank():
 # Get all banks
 
 
-@api.route('/getall', methods=['GET'])
+@api.route('/get_all', methods=['GET'])
 def allBanks():
     allBanks = Node("Bank", {})
     response = allBanks.getAll()

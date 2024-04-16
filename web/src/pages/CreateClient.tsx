@@ -22,7 +22,7 @@
 //     "declared_income": 1000.00
 // }
 
-import { Button } from '@/components/ui/button'
+import { Button } from "@/components/ui/button"
 import {
   Card,
   CardContent,
@@ -30,12 +30,12 @@ import {
   // CardFooter,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
+} from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
 // import { Label } from "@/components/ui/label"
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from 'react-hook-form'
-import { z } from 'zod'
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+import { z } from "zod"
 import {
   Form,
   FormControl,
@@ -44,54 +44,54 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form'
-import { Toaster } from '@/components/ui/toaster'
-import { toast } from '@/components/ui/use-toast'
+} from "@/components/ui/form"
+import { Toaster } from "@/components/ui/toaster"
+import { toast } from "@/components/ui/use-toast"
 
 const ClientSchema = z.object({
   name: z.string().min(1, {
-    message: 'Name is required',
+    message: "Name is required",
   }),
   surname: z.string().min(1, {
-    message: 'Surname is required',
+    message: "Surname is required",
   }),
   password: z.string().min(1, {
-    message: 'Password is required',
+    message: "Password is required",
   }),
   birthday: z.string().min(1, {
-    message: 'Birthday is required',
+    message: "Birthday is required",
   }),
   genre: z
     .string()
     .min(1, {
-      message: 'Genre is required',
+      message: "Genre is required",
     })
-    .refine((value) => value === 'Female' || value === 'Male', {
-      message: 'Genre must be Male or Female',
+    .refine((value) => value === "Female" || value === "Male", {
+      message: "Genre must be Male or Female",
     }),
   phone: z.string().min(1, {
-    message: 'Phone is required',
+    message: "Phone is required",
   }),
   email: z.string().min(1, {
-    message: 'Email is required',
+    message: "Email is required",
   }),
   dpi: z.string().min(1, {
-    message: 'DPI is required',
+    message: "DPI is required",
   }),
   street: z.string().min(1, {
-    message: 'Street is required',
+    message: "Street is required",
   }),
   city: z.string().min(1, {
-    message: 'City is required',
+    message: "City is required",
   }),
   state: z.string().min(1, {
-    message: 'State is required',
+    message: "State is required",
   }),
   country: z.string().min(1, {
-    message: 'Country is required',
+    message: "Country is required",
   }),
   postal_code: z.string().min(1, {
-    message: 'Postal code is required',
+    message: "Postal code is required",
   }),
   // bank_uuid: z.string().min(1, {
   //   message: "Bank is required",
@@ -102,16 +102,16 @@ const ClientSchema = z.object({
   work_related_tags: z
     .string()
     .min(1, {
-      message: 'Work related tags is required',
+      message: "Work related tags is required",
     })
-    .transform((val) => val.split(',').map((tag) => tag.trim())),
+    .transform((val) => val.split(",").map((tag) => tag.trim())),
   declared_income: z
     .string()
     .min(1, {
-      message: 'Declared income is required',
+      message: "Declared income is required",
     })
-    .refine((val) => val.includes('.'), {
-      message: 'Declared income must contain a dot',
+    .refine((val) => val.includes("."), {
+      message: "Declared income must contain a dot",
     })
     .transform((val) => parseFloat(val)),
 })
@@ -120,19 +120,19 @@ export default function CreateClient() {
   const form = useForm<z.infer<typeof ClientSchema>>({
     resolver: zodResolver(ClientSchema),
     defaultValues: {
-      name: '',
-      surname: '',
-      password: '',
-      birthday: '',
-      genre: '',
-      phone: '',
-      email: '',
-      dpi: '',
-      street: '',
-      city: '',
-      state: '',
-      country: '',
-      postal_code: '',
+      name: "",
+      surname: "",
+      password: "",
+      birthday: "",
+      genre: "",
+      phone: "",
+      email: "",
+      dpi: "",
+      street: "",
+      city: "",
+      state: "",
+      country: "",
+      postal_code: "",
       // bank_uuid: "",
       // employee_uuid: "",
       work_related_tags: [],
@@ -141,10 +141,10 @@ export default function CreateClient() {
   })
 
   const onSubmit = async (data: z.infer<typeof ClientSchema>) => {
-    const url = 'client/create'
+    const url = "client/create"
 
-    const uuid = localStorage.getItem('uuid')
-    const bank_uuid = localStorage.getItem('bank_uuid')
+    const uuid = localStorage.getItem("uuid")
+    const bank_uuid = localStorage.getItem("bank_uuid")
 
     const newData = {
       ...data,
@@ -153,18 +153,18 @@ export default function CreateClient() {
     }
 
     toast({
-      title: 'You submitted the following values:',
+      title: "You submitted the following values:",
       description: (
-        <pre className='mt-2 w-[340px] rounded-md bg-slate-950 p-4'>
-          <code className='text-white'>{JSON.stringify(newData, null, 2)}</code>
+        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+          <code className="text-white">{JSON.stringify(newData, null, 2)}</code>
         </pre>
       ),
     })
 
     fetch(`${import.meta.env.VITE_BASE_URL}/${url}`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       // body: JSON.stringify(data),
       body: JSON.stringify(newData),
@@ -181,22 +181,22 @@ export default function CreateClient() {
       .then((data) => {
         // Save token to local storage
         toast({
-          title: 'Client created',
-          description: 'success',
+          title: "Client created",
+          description: data.toString(),
         })
       })
       .catch((error) => {
         toast({
-          title: 'Error',
+          title: "Error",
           description: error.message,
-          variant: 'destructive',
+          variant: "destructive",
         })
       })
   }
 
   return (
-    <article className='flex flex-row items-center justify-center min-h-screen'>
-      <Card className='w-[350px]'>
+    <article className="flex flex-row items-center justify-center min-h-screen">
+      <Card className="w-[350px]">
         <CardHeader>
           <CardTitle>Create Client</CardTitle>
           <CardDescription>Create a new client.</CardDescription>
@@ -204,18 +204,18 @@ export default function CreateClient() {
         <CardContent>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
-              <div className='grid w-full items-center gap-4'>
+              <div className="grid w-full items-center gap-4">
                 <FormField
                   control={form.control}
-                  name='name'
+                  name="name"
                   render={({ field }) => (
-                    <FormItem className='flex flex-col space-y-1.5'>
+                    <FormItem className="flex flex-col space-y-1.5">
                       <FormLabel>Name</FormLabel>
                       <FormControl>
                         <Input
-                          id='name'
-                          type='text'
-                          placeholder='Name'
+                          id="name"
+                          type="text"
+                          placeholder="Name"
                           {...field}
                         />
                       </FormControl>
@@ -226,15 +226,15 @@ export default function CreateClient() {
                 />
                 <FormField
                   control={form.control}
-                  name='surname'
+                  name="surname"
                   render={({ field }) => (
-                    <FormItem className='flex flex-col space-y-1.5'>
+                    <FormItem className="flex flex-col space-y-1.5">
                       <FormLabel>Surname</FormLabel>
                       <FormControl>
                         <Input
-                          id='surname'
-                          type='text'
-                          placeholder='Surname'
+                          id="surname"
+                          type="text"
+                          placeholder="Surname"
                           {...field}
                         />
                       </FormControl>
@@ -245,15 +245,15 @@ export default function CreateClient() {
                 />
                 <FormField
                   control={form.control}
-                  name='password'
+                  name="password"
                   render={({ field }) => (
-                    <FormItem className='flex flex-col space-y-1.5'>
+                    <FormItem className="flex flex-col space-y-1.5">
                       <FormLabel>Password</FormLabel>
                       <FormControl>
                         <Input
-                          id='password'
-                          type='password'
-                          placeholder='Password'
+                          id="password"
+                          type="password"
+                          placeholder="Password"
                           {...field}
                         />
                       </FormControl>
@@ -264,16 +264,12 @@ export default function CreateClient() {
                 />
                 <FormField
                   control={form.control}
-                  name='birthday'
+                  name="birthday"
                   render={({ field }) => (
-                    <FormItem className='flex flex-col space-y-1.5'>
+                    <FormItem className="flex flex-col space-y-1.5">
                       <FormLabel>Birthday</FormLabel>
                       <FormControl>
-                        <Input
-                          id='birthday'
-                          type='date'
-                          {...field}
-                        />
+                        <Input id="birthday" type="date" {...field} />
                       </FormControl>
                       <FormDescription>Birthday of the client.</FormDescription>
                       <FormMessage />
@@ -282,15 +278,15 @@ export default function CreateClient() {
                 />
                 <FormField
                   control={form.control}
-                  name='genre'
+                  name="genre"
                   render={({ field }) => (
-                    <FormItem className='flex flex-col space-y-1.5'>
+                    <FormItem className="flex flex-col space-y-1.5">
                       <FormLabel>Genre</FormLabel>
                       <FormControl>
                         <Input
-                          id='genre'
-                          type='text'
-                          placeholder='Genre'
+                          id="genre"
+                          type="text"
+                          placeholder="Genre"
                           {...field}
                         />
                       </FormControl>
@@ -301,15 +297,15 @@ export default function CreateClient() {
                 />
                 <FormField
                   control={form.control}
-                  name='phone'
+                  name="phone"
                   render={({ field }) => (
-                    <FormItem className='flex flex-col space-y-1.5'>
+                    <FormItem className="flex flex-col space-y-1.5">
                       <FormLabel>Phone</FormLabel>
                       <FormControl>
                         <Input
-                          id='phone'
-                          type='text'
-                          placeholder='Phone'
+                          id="phone"
+                          type="text"
+                          placeholder="Phone"
                           {...field}
                         />
                       </FormControl>
@@ -320,15 +316,15 @@ export default function CreateClient() {
                 />
                 <FormField
                   control={form.control}
-                  name='email'
+                  name="email"
                   render={({ field }) => (
-                    <FormItem className='flex flex-col space-y-1.5'>
+                    <FormItem className="flex flex-col space-y-1.5">
                       <FormLabel>Email</FormLabel>
                       <FormControl>
                         <Input
-                          id='email'
-                          type='email'
-                          placeholder='Email'
+                          id="email"
+                          type="email"
+                          placeholder="Email"
                           {...field}
                         />
                       </FormControl>
@@ -339,15 +335,15 @@ export default function CreateClient() {
                 />
                 <FormField
                   control={form.control}
-                  name='dpi'
+                  name="dpi"
                   render={({ field }) => (
-                    <FormItem className='flex flex-col space-y-1.5'>
+                    <FormItem className="flex flex-col space-y-1.5">
                       <FormLabel>DPI</FormLabel>
                       <FormControl>
                         <Input
-                          id='dpi'
-                          type='text'
-                          placeholder='DPI'
+                          id="dpi"
+                          type="text"
+                          placeholder="DPI"
                           {...field}
                         />
                       </FormControl>
@@ -358,15 +354,15 @@ export default function CreateClient() {
                 />
                 <FormField
                   control={form.control}
-                  name='street'
+                  name="street"
                   render={({ field }) => (
-                    <FormItem className='flex flex-col space-y-1.5'>
+                    <FormItem className="flex flex-col space-y-1.5">
                       <FormLabel>Street</FormLabel>
                       <FormControl>
                         <Input
-                          id='street'
-                          type='text'
-                          placeholder='Street'
+                          id="street"
+                          type="text"
+                          placeholder="Street"
                           {...field}
                         />
                       </FormControl>
@@ -377,15 +373,15 @@ export default function CreateClient() {
                 />
                 <FormField
                   control={form.control}
-                  name='city'
+                  name="city"
                   render={({ field }) => (
-                    <FormItem className='flex flex-col space-y-1.5'>
+                    <FormItem className="flex flex-col space-y-1.5">
                       <FormLabel>City</FormLabel>
                       <FormControl>
                         <Input
-                          id='city'
-                          type='text'
-                          placeholder='City'
+                          id="city"
+                          type="text"
+                          placeholder="City"
                           {...field}
                         />
                       </FormControl>
@@ -396,15 +392,15 @@ export default function CreateClient() {
                 />
                 <FormField
                   control={form.control}
-                  name='state'
+                  name="state"
                   render={({ field }) => (
-                    <FormItem className='flex flex-col space-y-1.5'>
+                    <FormItem className="flex flex-col space-y-1.5">
                       <FormLabel>State</FormLabel>
                       <FormControl>
                         <Input
-                          id='state'
-                          type='text'
-                          placeholder='State'
+                          id="state"
+                          type="text"
+                          placeholder="State"
                           {...field}
                         />
                       </FormControl>
@@ -415,15 +411,15 @@ export default function CreateClient() {
                 />
                 <FormField
                   control={form.control}
-                  name='country'
+                  name="country"
                   render={({ field }) => (
-                    <FormItem className='flex flex-col space-y-1.5'>
+                    <FormItem className="flex flex-col space-y-1.5">
                       <FormLabel>Country</FormLabel>
                       <FormControl>
                         <Input
-                          id='country'
-                          type='text'
-                          placeholder='Country'
+                          id="country"
+                          type="text"
+                          placeholder="Country"
                           {...field}
                         />
                       </FormControl>
@@ -434,15 +430,15 @@ export default function CreateClient() {
                 />
                 <FormField
                   control={form.control}
-                  name='postal_code'
+                  name="postal_code"
                   render={({ field }) => (
-                    <FormItem className='flex flex-col space-y-1.5'>
+                    <FormItem className="flex flex-col space-y-1.5">
                       <FormLabel>Postal code</FormLabel>
                       <FormControl>
                         <Input
-                          id='postal_code'
-                          type='text'
-                          placeholder='Postal code'
+                          id="postal_code"
+                          type="text"
+                          placeholder="Postal code"
                           {...field}
                         />
                       </FormControl>
@@ -493,15 +489,15 @@ export default function CreateClient() {
                 /> */}
                 <FormField
                   control={form.control}
-                  name='work_related_tags'
+                  name="work_related_tags"
                   render={({ field }) => (
-                    <FormItem className='flex flex-col space-y-1.5'>
+                    <FormItem className="flex flex-col space-y-1.5">
                       <FormLabel>Work related tags</FormLabel>
                       <FormControl>
                         <Input
-                          id='work_related_tags'
-                          type='text'
-                          placeholder='Work related tags'
+                          id="work_related_tags"
+                          type="text"
+                          placeholder="Work related tags"
                           {...field}
                         />
                       </FormControl>
@@ -514,15 +510,15 @@ export default function CreateClient() {
                 />
                 <FormField
                   control={form.control}
-                  name='declared_income'
+                  name="declared_income"
                   render={({ field }) => (
-                    <FormItem className='flex flex-col space-y-1.5'>
+                    <FormItem className="flex flex-col space-y-1.5">
                       <FormLabel>Declared income</FormLabel>
                       <FormControl>
                         <Input
-                          id='declared_income'
-                          type='number'
-                          placeholder='Declared income'
+                          id="declared_income"
+                          type="number"
+                          placeholder="Declared income"
                           {...field}
                         />
                       </FormControl>
@@ -534,10 +530,7 @@ export default function CreateClient() {
                   )}
                 />
               </div>
-              <Button
-                type='submit'
-                className='w-full mt-4'
-              >
+              <Button type="submit" className="w-full mt-4">
                 Submit
               </Button>
             </form>

@@ -27,7 +27,7 @@ export default defineConfig({
     alias: [
       {
         find: '@Layout',
-        replacement: path.resolve(__dirname, 'src/Fragments'),
+        replacement: path.resolve(__dirname, 'src/Layout'),
       },
       {
         find: '@Components',

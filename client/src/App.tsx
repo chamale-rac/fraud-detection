@@ -1,6 +1,6 @@
 import './App.css'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import { Landing, Login, SignUp } from '@Pages'
+import { Landing, Login, SignUp, Admin, Layout } from '@Pages'
 import { Toaster } from '@/components/ui/toaster'
 
 // const viteLogo = '/vite.svg'
@@ -13,11 +13,12 @@ function App() {
           <Route path="/" element={<Landing />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
-          <Route path="/app" element={<>App</>}>
+          <Route path="/admin" element={<Admin />} />
+          <Route path="/app" element={<Layout />}>
             <Route>
-              <Route path="/app/dashboard" element={<>Dashboard</>} />
-              <Route path="/app/profile" element={<>Profile</>} />
-              <Route path="/app/settings" element={<>Settings</>} />
+              <Route path="/app/transactions" element={<>transactions</>} />
+              <Route path="/app/banks" element={<>Banks</>} />
+              <Route path="/app/Users" element={<>Users</>} />
             </Route>
           </Route>
         </Routes>

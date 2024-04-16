@@ -6,7 +6,7 @@
     "noEmit": false,
     "baseUrl": ".",
     "paths": {
-      "@Fragments": ["src/Fragments"],
+      "@Layout": ["src/Layout"],
       "@Components": ["src/Components"],
       "@Pages": ["src/Pages"],
       "@Config/*": ["src/Config/*"],

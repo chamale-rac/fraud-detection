@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useToast } from '@/components/ui/use-toast'
+import { Switch } from '@/components/ui/switch'
 import { wait } from '@Utils'
 
 function Login() {
@@ -8,6 +9,7 @@ function Login() {
   const { toast } = useToast()
 
   const [loading, setLoading] = useState(false)
+  const [admin, setAdmin] = useState(false)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
@@ -33,6 +35,12 @@ function Login() {
         <Link className="underline mb-[1rem]" to="/signup">
           Sign up
         </Link>
+        <section className="flex gap-[0.5rem] mb-[1rem]">
+          <label htmlFor="admin" className="my-auto mr-0.5rem h-fit">
+            Admin
+          </label>
+          <Switch id="admin" checked={admin} onCheckedChange={checked => setAdmin(checked)} />
+        </section>
         <form onSubmit={login} className="flex flex-col gap-[1rem] h-fit w-full my-auto mx-0 p-0">
           <article className="flex flex-col gap-[0.5rem]">
             <label htmlFor="email">Email</label>

@@ -13,7 +13,7 @@ def propChecker(fields: dict, data: dict):
                 if expected_type is float and isinstance(data[key], int):
                     data[key] = float(data[key])
                 else:
-                    return False, f"Incorrect type for key {key} ({description}): Expected {expected_type.__name__}, got {type(data[key]).__name__}"
+                    return False, f"Incorrect type for key {key} ({description}): Expected {expected_type._name}, got {type(data[key]).name_}"
     return True, "All properties are valid"
 
 

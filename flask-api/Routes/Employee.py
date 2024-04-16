@@ -160,13 +160,27 @@ def loginEmployee():
             "message": "Bank employee is not active",
             "match": False
         }), 401
+    thisEmployee.uuid = user["uuid"]
+    # Get the bank the employee works at
+    # bankNode->HAS_EMPLOYEE->thisEmployee
+    bankNode = Node("Bank", {})
 
-    user.pop("password")
-    user.pop("pin")
+    bankOfEmployee = Relationship(bankNode, thisEmployee, "HAS_EMPLOYEE")
+    exist = bankOfEmployee.matchReturnA()
+    print(exist)
+    if not exist["success"] or len(exist["response"]) == 0:
+        return jsonify({
+            "message": "Bank not found",
+            "match": False
+        }), 404
 
+    thisBank = [node2Dict(record["a"]) for record in exist["response"]][0]
+
+    # add bank_uuid to response
     return jsonify({
         "message": "Bank employee found",
         "uuid": user["uuid"],
         "match": True,
-        "user": user
+        "user": user,
+        "bank_uuid": thisBank["uuid"]
     }), 200

@@ -19,9 +19,7 @@ cors = CORS(api)
 
 AccountProperties = {
     "account_type": (str, "Type of the bank account [Saving, Checking]", True),
-    "interest_rate": (float, "Interest rate of the account", True),
     "currency": (str, "Currency of the account [USD, EUR, etc.]", True),
-    "balance": (float, "Current balance of the account", True),
     "user_uuid": (str, "UUID of the account owner", True),
     "bank_uuid": (str, "UUID of the bank of the account", True),
     "nickname": (str, "Nickname of the account", False)
@@ -69,6 +67,16 @@ def createAccount():
         return jsonify({
             "message": "Invalid account type, expected Saving, Checking, or Business"
         }), 400
+
+    # Balance default value 10
+    if "balance" not in data:
+        data["balance"] = 10
+
+    # Currency rate Saving 0.01, Checking 0.005
+    if data["account_type"] == "Saving":
+        data["interest_rate"] = 0.01
+    else:
+        data["interest_rate"] = 0.005
 
     # Get the current date and time
     now = datetime.now()

@@ -198,10 +198,8 @@ export default function CreateClient() {
     <article className='flex flex-row items-center justify-center min-h-screen'>
       <Card className='w-[350px]'>
         <CardHeader>
-          <CardTitle>Create project</CardTitle>
-          <CardDescription>
-            Deploy your new project in one-click.
-          </CardDescription>
+          <CardTitle>Create Client</CardTitle>
+          <CardDescription>Create a new client.</CardDescription>
         </CardHeader>
         <CardContent>
           <Form {...form}>

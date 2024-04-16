@@ -190,17 +190,25 @@ def loginClient():
             "message": "Client is not active",
             "match": False
         }), 404
+    thisClient.uuid = user["uuid"]
 
-    # Remove password from the response
-    user.pop("password")
-    # Remove pin from the response
-    user.pop("pin")
+    bankNode = Node("Bank", {})
+    bankOfClient = Relationship(bankNode, thisClient, "HAS_CLIENT")
 
-    print(user)
+    exist = bankOfClient.matchReturnA()
+    print(exist)
+    if not exist["success"] or len(exist["response"]) == 0:
+        return jsonify({
+            "message": "Bank not found",
+            "match": False
+        }), 404
+
+    thisBank = [node2Dict(record["a"]) for record in exist["response"]][0]
 
     return jsonify({
         "message": "Client found",
         "uuid": user["uuid"],
         "match": True,
-        "user": user
+        "user": user,
+        "bank_uuid": thisBank["uuid"]
     }), 200

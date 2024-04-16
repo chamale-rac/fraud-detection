@@ -4,6 +4,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import App from './App'
 import Login from './pages/Login'
 import EmployeeDashboard from './pages/EmployeeDashboard'
+import CreateAccount from './pages/CreateAccount'
 import './index.css'
 
 const router = createBrowserRouter([
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
   {
     path: '/employee/dashboard',
     element: <EmployeeDashboard />,
+  },
+  {
+    path: '/client/account/create',
+    element: <CreateAccount />,
   },
 ])
 

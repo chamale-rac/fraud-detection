@@ -75,6 +75,8 @@ const Login = () => {
       .then((data) => {
         // Save token to local storage
         localStorage.setItem('user', data.user)
+        localStorage.setItem('uuid', data.uuid)
+        localStorage.setItem('bank_uuid', data.bank_uuid)
         // Redirect to dashboard
         navigate(navigateTo)
       })

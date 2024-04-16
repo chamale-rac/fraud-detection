@@ -1,4 +1,5 @@
 from datetime import datetime
+from neo4j.time import DateTime
 
 
 def propChecker(fields: dict, data: dict):
@@ -43,6 +44,12 @@ def dict2Cypher(properties: dict):
 def node2Dict(node):
     node_dict = {prop: node[prop] for prop in node.keys()}
     node_dict['labels'] = list(node.labels)
+
+    # Convert neo4j.time.DateTime to string
+    for key, value in node_dict.items():
+        if isinstance(value, DateTime):
+            node_dict[key] = value.isoformat()
+
     return node_dict
 
 

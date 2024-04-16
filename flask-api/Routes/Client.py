@@ -212,3 +212,67 @@ def loginClient():
         "user": user,
         "bank_uuid": thisBank["uuid"]
     }), 200
+
+
+"""
+Get client Bank Accounts
+"""
+
+getAllAccountsProperties = {
+    "client_uuid": (str, "UUID of the client", True)
+}
+
+
+@api.route("/all_bank_accounts", methods=["POST"])
+def getAllAccounts():
+    data = request.get_json()
+
+    valid, message = propChecker(getAllAccountsProperties, data)
+
+    if not valid:
+        return jsonify({
+            "message": message
+        }), 400
+
+    thisClient = Node("Client", {
+        "uuid": data["client_uuid"]
+    })
+
+    response = thisClient.match()
+
+    if not response["success"] or len(response["response"]) == 0:
+        return jsonify({
+            "message": f"Client not found: {response['message']}"
+        }), 404
+
+    thisClient.uuid = data["client_uuid"]
+
+    bankNode = Node("Bank", {})
+    bankOfClient = Relationship(bankNode, thisClient, "HAS_CLIENT")
+
+    exist = bankOfClient.matchReturnA()
+    if not exist["success"] or len(exist["response"]) == 0:
+        return jsonify({
+            "message": "Bank not found"
+        }), 404
+
+    thisBank = [node2Dict(record["a"]) for record in exist["response"]][0]
+
+    accountNode = Node("Account", {})
+    accountOfClient = Relationship(thisClient, accountNode, "OWNS_ACCOUNT")
+
+    accounts = accountOfClient.matchReturnB2()
+    if not accounts["success"]:
+        return jsonify({
+            "message": f"Failed to get accounts: {accounts['message']}"
+        }), 500
+
+    print(accounts["response"])
+    accountsR = [node2Dict(record["b"]) for record in accounts["response"]]
+    print('*'*50)
+    print(accountsR)
+    return jsonify({
+        "message": "Accounts found",
+        "accounts": accountsR,
+        "bank_uuid": thisBank["uuid"]
+    }), 200

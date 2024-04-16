@@ -9,6 +9,11 @@ function Sidebar() {
         </Link>
       </li>
       <li>
+        <Link to="/app/transfers" className="flex w-full p-[1rem] bg-white rounded">
+          Transfers 💸
+        </Link>
+      </li>
+      <li>
         <Link to="/app/banks" className="flex w-full p-[1rem] bg-white rounded">
           Banks 🏦
         </Link>

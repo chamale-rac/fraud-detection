@@ -93,12 +93,12 @@ const ClientSchema = z.object({
   postal_code: z.string().min(1, {
     message: "Postal code is required",
   }),
-  bank_uuid: z.string().min(1, {
-    message: "Bank is required",
-  }),
-  employee_uuid: z.string().min(1, {
-    message: "Employee is required",
-  }),
+  // bank_uuid: z.string().min(1, {
+  //   message: "Bank is required",
+  // }),
+  // employee_uuid: z.string().min(1, {
+  //   message: "Employee is required",
+  // }),
   work_related_tags: z
     .string()
     .min(1, {
@@ -133,31 +133,41 @@ export default function CreateClient() {
       state: "",
       country: "",
       postal_code: "",
-      bank_uuid: "",
-      employee_uuid: "",
+      // bank_uuid: "",
+      // employee_uuid: "",
       work_related_tags: [],
       declared_income: 0,
     },
   })
 
   const onSubmit = async (data: z.infer<typeof ClientSchema>) => {
+    const url = "client/create"
+
+    const uuid = localStorage.getItem("uuid")
+    const bank_uuid = localStorage.getItem("bank_uuid")
+
+    const newData = {
+      ...data,
+      employee_uuid: uuid,
+      bank_uuid: bank_uuid,
+    }
+
     toast({
       title: "You submitted the following values:",
       description: (
         <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
+          <code className="text-white">{JSON.stringify(newData, null, 2)}</code>
         </pre>
       ),
     })
-
-    const url = "client/create"
 
     fetch(`${import.meta.env.VITE_BASE_URL}/${url}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(data),
+      // body: JSON.stringify(data),
+      body: JSON.stringify(newData),
     })
       .then((res) => {
         console.log(res)
@@ -442,7 +452,7 @@ export default function CreateClient() {
                     </FormItem>
                   )}
                 />
-                <FormField
+                {/* <FormField
                   control={form.control}
                   name="bank_uuid"
                   render={({ field }) => (
@@ -460,8 +470,8 @@ export default function CreateClient() {
                       <FormMessage />
                     </FormItem>
                   )}
-                />
-                <FormField
+                /> */}
+                {/* <FormField
                   control={form.control}
                   name="employee_uuid"
                   render={({ field }) => (
@@ -479,7 +489,7 @@ export default function CreateClient() {
                       <FormMessage />
                     </FormItem>
                   )}
-                />
+                /> */}
                 <FormField
                   control={form.control}
                   name="work_related_tags"

@@ -24,6 +24,10 @@ class Relationship:
         query = f"MATCH (a:{self.start_node.label})-[r:{self.relationship_type}]->(b:{self.end_node.label}  {{uuid: '{self.end_node.uuid}'}}) RETURN b"
         return conn.run(query)
 
+    def matchReturnA(self):
+        query = f"MATCH (a:{self.start_node.label})-[r:{self.relationship_type}]->(b:{self.end_node.label}  {{uuid: '{self.end_node.uuid}'}}) RETURN a"
+        return conn.run(query)
+
     # REQUIREMENT: Eliminación de relaciones
     # REQUIREMENT: Operación que permita eliminar 1 relación
     def delete(self):

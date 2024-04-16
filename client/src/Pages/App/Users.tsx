@@ -20,6 +20,30 @@ import { useState } from 'react'
 //     "since": "2010-01-01"
 // }
 
+// {
+//     "name": "FAKE2",
+//     "surname": "Chamale",
+//     "password": "password123",
+//     "birthday": "1990-01-01",
+//     "genre": "Male",
+
+//     "phone": "1234567890",
+//     "email": "john.doe@example.com",
+//     "dpi": "1234567890113",
+
+//     "street": "123 Main St",
+//     "city": "Anytown",
+//     "state": "Anystate",
+//     "country": "AnyCountry",
+//     "postal_code": "12345",
+
+//     "bank_uuid": "a866c1be-a6fe-4e17-b2eb-26f4e6b33bca",
+//     "employee_uuid":  "6bee774a-5b06-450f-90d4-a17798976082",
+
+//     "work_related_tags": ["agriculture", "textile"],
+//     "declared_income": 1000.00
+// }
+
 function Users() {
   const [name, setName] = useState('')
   const [surname, setSurname] = useState('')
@@ -35,9 +59,11 @@ function Users() {
   const [country, setCountry] = useState('')
   const [postalCode, setPostalCode] = useState('')
   const [bankUuid, setBankUuid] = useState('')
-  const [position, setPosition] = useState('')
-  const [salary, setSalary] = useState(0)
-  const [since, setSince] = useState('')
+  const [employeeUuid, setEmployeeUuid] = useState('')
+  const [workRelatedTags, setWorkRelatedTags] = useState<string[]>([])
+  // const [position, setPosition] = useState('')
+  const [income, setIncome] = useState(0)
+  // const [since, setSince] = useState('')
 
   const createUser = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -56,9 +82,12 @@ function Users() {
       country: country,
       postal_code: postalCode,
       bank_uuid: bankUuid,
-      position: position,
-      salary: salary,
-      since: since,
+      employee_uuid: employeeUuid,
+      work_related_tags: workRelatedTags,
+      declared_income: income,
+      // position: position,
+      // salary: salary,
+      // since: since,
     }
     console.log('CREATE USER')
     console.log('body:', body)
@@ -76,7 +105,7 @@ function Users() {
   return (
     <article className="h-lvh w-full flex flex-row justify-around p-[4rem] overflow-y-auto">
       <section>
-        <h2 className="text-4xl">Create users 🛠️</h2>
+        <h2 className="text-4xl mb-[1rem]">Create users 🛠️</h2>
         <form onSubmit={createUser} className="grid grid-rows-5 grid-flow-col gap-4 h-fit w-full my-auto mx-0 p-0">
           <article className="flex flex-col gap-[0.5rem]">
             <label htmlFor="email">Name</label>
@@ -219,6 +248,16 @@ function Users() {
             />
           </article>
           <article className="flex flex-col gap-[0.5rem]">
+            <label htmlFor="employee">Employee UUID</label>
+            <input
+              onChange={e => setEmployeeUuid(e.target.value)}
+              id="employee"
+              type="text"
+              className="w-[10rem] m-0 py-[0.5rem] px-[0.75rem] rounded border-stone-100 border-[1px] border-solid bg-stone-100 focus:outline-none"
+              required
+            />
+          </article>
+          {/* <article className="flex flex-col gap-[0.5rem]">
             <label htmlFor="email">Position</label>
             <input
               onChange={e => setPosition(e.target.value)}
@@ -227,11 +266,11 @@ function Users() {
               className="w-[10rem] m-0 py-[0.5rem] px-[0.75rem] rounded border-stone-100 border-[1px] border-solid bg-stone-100 focus:outline-none"
               required
             />
-          </article>
+          </article> */}
           <article className="flex flex-col gap-[0.5rem]">
-            <label htmlFor="email">Salary</label>
+            <label htmlFor="email">Declared Income</label>
             <input
-              onChange={e => setSalary(parseFloat(e.target.value))}
+              onChange={e => setIncome(parseFloat(e.target.value))}
               id="salary"
               type="number"
               className="w-[10rem] m-0 py-[0.5rem] px-[0.75rem] rounded border-stone-100 border-[1px] border-solid bg-stone-100 focus:outline-none"
@@ -239,11 +278,11 @@ function Users() {
             />
           </article>
           <article className="flex flex-col gap-[0.5rem]">
-            <label htmlFor="email">Since</label>
+            <label htmlFor="email">Work related tags</label>
             <input
-              onChange={e => setSince(e.target.value)}
+              onChange={e => setWorkRelatedTags(e.target.value.split(' '))}
               id="since"
-              type="date"
+              type="text"
               className="w-[10rem] m-0 py-[0.5rem] px-[0.75rem] rounded border-stone-100 border-[1px] border-solid bg-stone-100 focus:outline-none"
               required
             />
@@ -257,7 +296,7 @@ function Users() {
         </form>
       </section>
       <section>
-        <h2 className="text-4xl">Find users 🔍</h2>
+        <h2 className="text-4xl mb-[1rem]">Find users 🔍</h2>
         <form onSubmit={findUser} className="flex flex-col gap-[1rem] h-fit w-full my-auto mx-0 p-0">
           <article className="flex flex-col gap-[0.5rem]">
             <label htmlFor="email">Email</label>

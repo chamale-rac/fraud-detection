@@ -8,7 +8,7 @@ import tailwindcss from 'tailwindcss'
 export default defineConfig({
   server: {
     host: '0.0.0.0',
-    port: 5000,
+    port: 4000,
   },
   plugins: [
     react(),
@@ -35,7 +35,7 @@ export default defineConfig({
       },
       {
         find: '@Utils',
-        replacement: path.resolve(__dirname, 'src/utils'),
+        replacement: path.resolve(__dirname, 'src/Utils'),
       },
       {
         find: '@Pages',

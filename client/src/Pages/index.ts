@@ -1,3 +1,5 @@
-import { Landing } from './Global'
+import Landing from './Global/Landing'
+import Login from './Global/Login'
+import SignUp from './Global/SignUp'
 
-export { Landing }
+export { Landing, Login, SignUp }

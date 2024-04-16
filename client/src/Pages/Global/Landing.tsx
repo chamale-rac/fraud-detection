@@ -9,7 +9,7 @@ function Landing() {
       <main className="w-full h-56 m-0 px-0 py-48 bg-violet-950 text-white flex items-center justify-center flex-col gap-8 text-lg">
         <article>
           <h2>
-            Don&apos;t have an account yet?{' '}
+            Don&apos;t have an account yet? &nbsp;
             <Link className="underline" to="/signup">
               Register
             </Link>
@@ -26,7 +26,7 @@ function Landing() {
         </article>
       </main>
       <footer className="flex w-full h-16 mt-auto mx-0 mb-0 px-0 py-36 bg-blue-600 text-white flex items-center justify-center">
-        Visit our&nbsp;
+        Visit our &nbsp;
         <a href="https://github.com/chamale-rac/fraud-detection.git" target="_blank" className="underline">
           Github
         </a>

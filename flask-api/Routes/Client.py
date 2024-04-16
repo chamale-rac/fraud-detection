@@ -10,6 +10,7 @@ from flask_cors import CORS
 from utils import propChecker, propFilter, node2Dict
 from Generics import Node, Relationship
 import uuid
+from datetime import datetime
 
 Node = Node.Node
 Relationship = Relationship.Relationship
@@ -37,6 +38,10 @@ createClientProperties = {
     "postal_code": (str, "Postal code of the client", True),
 
     "bank_uuid": (str, "UUID of the bank of the client", True),
+    "employee_uuid": (str, "UUID of the employee that created the client", True),
+
+    "work_related_tags": (list, "List of tags related to the client", False),
+    "declared_income": (float, "Declared income of the client", False),
 }
 
 
@@ -69,14 +74,34 @@ def createClient():
             "message": f"Bank not found: Check the UUID provided"
         }), 404
 
+    thisEmployee = Node("Employee", {
+        "uuid": data["employee_uuid"]
+    })
+    thisEmployee.uuid = data["employee_uuid"]
+    employeeExists = thisEmployee.match()
+    if not employeeExists["success"] or len(employeeExists["response"]) == 0:
+        return jsonify({
+            "message": f"Employee not found: Check the UUID provided"
+        }), 404
+
+    employeeBank = Relationship(thisBank, thisEmployee, "HAS_EMPLOYEE")
+    employeeBankExists = employeeBank.match()
+    if not employeeBankExists["success"] or len(employeeBankExists["response"]) == 0:
+        return jsonify({
+            "message": f"Employee is not related to the bank"
+        }), 404
+
     data["pin"] = str(uuid.uuid4())
 
     thisDPI = Node("DPI", propFilter(
         data, ["dpi"]
     ))
 
+    # Add client active
+    data["active"] = True
     thisClient = Node("Client", propFilter(
-        data, ["name", "surname", "password", "birthday", "genre", "pin"]
+        data, ["name", "surname", "password",
+               "birthday", "genre", "pin", "active", "work_related_tags", "declared_income"]
     ))
 
     # Then merge the phone, email, dpi, address
@@ -114,7 +139,12 @@ def createClient():
         Relationship(thisClient, thisEmail, "HAS_EMAIL").create()
         Relationship(thisClient, thisDPI, "HAS_DPI").create()
         Relationship(thisClient, thisAddress, "HAS_ADDRESS").create()
-        Relationship(thisClient, thisBank, "HAS_BANK").create()
+        Relationship(thisBank, thisClient, "HAS_CLIENT").create()
+        now = datetime.now()
+
+        Relationship(thisEmployee, thisClient, "REGISTER_CLIENT", {
+            "date": now
+        }).create()
     except Exception as e:
         return str(e), 500
 
@@ -153,6 +183,14 @@ def loginClient():
         }), 404
 
     user = [node2Dict(record["n"]) for record in response["response"]][0]
+
+    # Check active
+    if user["active"] != True:
+        return jsonify({
+            "message": "Client is not active",
+            "match": False
+        }), 404
+
     # Remove password from the response
     user.pop("password")
     # Remove pin from the response

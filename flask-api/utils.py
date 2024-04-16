@@ -3,13 +3,17 @@ from datetime import datetime
 
 def propChecker(fields: dict, data: dict):
     for key, value in fields.items():
-        expected_type, description, required = value
+        expectedtype, description, required = value
         if key not in data.keys():
             if required:
                 return False, f"Missing required key: {key}, which is the {description}"
         else:
-            if not isinstance(data[key], expected_type):
-                return False, f"Incorrect type for key {key} ({description}): Expected {expected_type.__name__}, got {type(data[key]).__name__}"
+            if not isinstance(data[key], expectedtype):
+                # Special case for float and int
+                if expectedtype is float and isinstance(data[key], int):
+                    data[key] = float(data[key])
+                else:
+                    return False, f"Incorrect type for key {key} ({description}): Expected {expectedtype.__name}, got {type(data[key]).__name}"
     return True, "All properties are valid"
 
 

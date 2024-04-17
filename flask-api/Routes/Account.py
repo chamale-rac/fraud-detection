@@ -8,11 +8,12 @@
 from flask import Blueprint, request, jsonify
 from flask_cors import CORS
 from utils import propChecker, propFilter, node2Dict, convertDate
-from Generics import Node, Relationship
+from Generics import Node, Relationship, cur
 from datetime import datetime
 
 Node = Node.Node
 Relationship = Relationship.Relationship
+conn = cur.cur
 
 api = Blueprint("account", __name__)
 cors = CORS(api)

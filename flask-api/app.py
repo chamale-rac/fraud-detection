@@ -14,6 +14,7 @@ from Routes.Account import api as account_api
 from Routes.Employee import api as employee_api
 from Routes.Transaction import api as transaction_api
 from Routes.helpers import api as helpers_api
+from Routes.Admin import api as admin_api
 
 app = Flask(__name__)
 app.config['CORS_HEADERS'] = 'Content-Type'
@@ -26,6 +27,7 @@ app.register_blueprint(account_api, url_prefix='/account')
 app.register_blueprint(employee_api, url_prefix='/employee')
 app.register_blueprint(transaction_api, url_prefix='/transaction')
 app.register_blueprint(helpers_api, url_prefix='/helpers')
+app.register_blueprint(admin_api, url_prefix='/admin')
 
 
 @app.route('/zzz', methods=['GET'])

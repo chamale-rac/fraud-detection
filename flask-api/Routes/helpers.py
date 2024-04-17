@@ -39,17 +39,24 @@ def searchAny():
             "message": message
         }), 400
 
+    skip = data["skip"] if "skip" in data else 0
+    limit = data["limit"] if "limit" in data else 10
+
     if data["bank_uuid"] != "NOT_USED":
         query = f"""
         MATCH (n:{data["node_type"]})
         WHERE n.{data["property"]} CONTAINS '{data["value"]}' AND n.bank_uuid = '{data["bank_uuid"]}'
         RETURN n
+        SKIP {skip}
+        LIMIT {limit}
         """
     else:
         query = f"""
         MATCH (n:{data["node_type"]})
         WHERE n.{data["property"]} CONTAINS '{data["value"]}'
         RETURN n
+        SKIP {skip}
+        LIMIT {limit}
         """
 
     response = conn.run(query)

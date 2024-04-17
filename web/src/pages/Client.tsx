@@ -6,9 +6,9 @@ export default function Client() {
   return (
     <article>
       <header className="flex h-fit w-full justify-around p-[1rem] border-gray border shadow-sm rounded-br-lg rounded-bl-lg">
-        <h1 className="font-bold text-[1.25rem] my-auto">
-          Client Dashboard 👤
-        </h1>
+        <Link to="/" className="font-bold text-[1.25rem] my-auto">
+          Client 👤
+        </Link>
         <ul className="flex gap-[1rem]">
           <li>
             <Link
@@ -28,6 +28,16 @@ export default function Client() {
               })}
             >
               Account 💳
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="my_accounts"
+              className={buttonVariants({
+                size: "sm",
+              })}
+            >
+              My accounts ✨
             </Link>
           </li>
           <li>

@@ -6,9 +6,9 @@ export default function Employee() {
   return (
     <article>
       <header className="flex h-fit w-full justify-around p-[1rem] border-gray border shadow-sm rounded-br-lg rounded-bl-lg">
-        <h1 className="font-bold text-[1.25rem] my-auto">
-          Employee dashboard 🏢
-        </h1>
+        <Link to="/" className="font-bold text-[1.25rem] my-auto">
+          Employee 🏢
+        </Link>
         <ul className="flex gap-[1rem]">
           <li>
             <Link

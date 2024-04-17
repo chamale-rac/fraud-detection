@@ -11,6 +11,7 @@ import Client from "./pages/Client"
 import Cash from "./pages/Cash"
 import Employee from "./pages/Employee"
 import Admin from "./pages/Admin"
+import MyAccounts from "./pages/MyAccounts"
 import "./index.css"
 
 const router = createBrowserRouter([
@@ -39,6 +40,7 @@ const router = createBrowserRouter([
     children: [
       { path: "/client/dashboard", element: <div>Dashboard</div> },
       { path: "/client/account", element: <CreateAccount /> },
+      { path: "/client/my_accounts", element: <MyAccounts /> },
       { path: "/client/transaction", element: <ClientTransaction /> },
     ],
   },

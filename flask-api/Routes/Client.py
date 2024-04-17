@@ -277,3 +277,68 @@ def getAllAccounts():
         "accounts": accountsR,
         "bank_uuid": thisBank["uuid"]
     }), 200
+
+
+activeProperties = {
+    "client_uuid": (str, "UUID of the client", True),
+    "employee_uuid": (str, "UUID of the employee that activated the client", True)
+}
+
+
+@api.route("/active_desactive", methods=["POST"])
+def activeDesactiveClient():
+    data = request.get_json()
+
+    valid, message = propChecker(activeProperties, data)
+
+    if not valid:
+        return jsonify({
+            "message": message
+        }), 400
+
+    thisClient = Node("Client", {
+        "uuid": data["client_uuid"]
+    })
+
+    response = thisClient.match()
+
+    if not response["success"] or len(response["response"]) == 0:
+        return jsonify({
+            "message": f"Client not found: {response['message']}"
+        }), 404
+
+    thisEmployee = Node("Employee", {
+        "uuid": data["employee_uuid"]
+    })
+
+    employeeExists = thisEmployee.match()
+    if not employeeExists["success"] or len(employeeExists["response"]) == 0:
+        return jsonify({
+            "message": f"Employee not found: Check the UUID provided"
+        }), 404
+
+    query = f"""
+    MATCH (c:Client {{uuid: '{data["client_uuid"]}'}}), (e:Employee {{uuid: '{data["employee_uuid"]}'}})
+    SET c.active = NOT c.active
+    WITH c, e
+    OPTIONAL MATCH (e)-[r:CHANGE_STATUS]->(c)
+    DELETE r
+    WITH c, e
+    CREATE (e)-[r:CHANGE_STATUS]->(c)
+    SET r = CASE c.active
+        WHEN true THEN {{activation_date: datetime(), activation_reason: 'Activated by employee', deactivation_date: null, deactivation_reason: null}}
+        ELSE {{activation_date: null, activation_reason: null, deactivation_date: datetime(), deactivation_reason: 'Deactivated by employee'}}
+        END
+    RETURN c, r, e
+    """
+
+    response = conn.run(query)
+
+    if not response["success"]:
+        return jsonify({
+            "message": f"Failed to change status: {response['message']}"
+        }), 500
+
+    return jsonify({
+        "message": "Status changed successfully"
+    }), 200

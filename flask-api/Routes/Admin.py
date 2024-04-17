@@ -108,10 +108,7 @@ def deleteFraudClients():
 
     group_size = data["group_size"]
 
-    query = f"""
-    CALL gds.graph.drop('wcc')
-    YIELD graphName;
-
+    query1 = f"""
     CALL gds.graph.project('wcc',
       {{
         Client: {{
@@ -119,8 +116,8 @@ def deleteFraudClients():
         }}
       }},
       {{
-        SHARED_IDENTIFIERS:{{
-          type: 'SHARED_IDENTIFIERS',
+        SHARED_DATA:{{
+          type: 'SHARED_DATA',
           orientation: 'UNDIRECTED',
           properties: {{
             count: {{
@@ -130,11 +127,15 @@ def deleteFraudClients():
         }}
       }}
     ) YIELD graphName,nodeCount,relationshipCount,projectMillis;
+    """
 
+    response = conn.run(query1)
+
+    query2 = f"""    
     CALL gds.wcc.stream('wcc',
       {{
         nodeLabels: ['Client'],
-        relationshipTypes: ['SHARED_IDENTIFIERS'],
+        relationshipTypes: ['SHARED_DATA'],
         consecutiveIds: true
       }}
     )
@@ -145,8 +146,11 @@ def deleteFraudClients():
     UNWIND clients AS client
     MATCH (c:Client) WHERE c.uuid = client
     SET c.firstPartyFraudGroup=cluster;
+    """
 
+    response = conn.run(query2)
 
+    query3 = f"""
     // Match the clients based on group criteria
 
     MATCH (c:Client)
@@ -169,7 +173,13 @@ def deleteFraudClients():
     RETURN nodesToDelete;
     """
 
-    response = conn.run(query)
+    response = conn.run(query3)
+
+    delete_wwc_query = """
+    CALL gds.graph.drop('wcc')
+    YIELD graphName;
+    """
+    response2 = conn.run(delete_wwc_query)
 
     if response["success"]:
         if len(response["response"]) == 0:

@@ -16,7 +16,7 @@ const BACKEND_URL = import.meta.env.VITE_BASE_URL
 
 type CardProps = React.ComponentProps<typeof Card>
 
-export default function CardDemo({ className, ...props }: CardProps) {
+export default function MyAccounts({ className, ...props }: CardProps) {
   const [accounts, setAccounts] = useState([])
 
   useEffect(() => {
@@ -61,7 +61,7 @@ export default function CardDemo({ className, ...props }: CardProps) {
   }, [])
 
   return (
-    <article className="flex flex-wrap gap-[2rem] row-gap-[1rem] items-center justify-center min-h-screen px-[20rem]">
+    <article className="grid grid-cols-3 gap-x-4 gap-y-12 items-center justify-center h-fit w-full px-[3rem] pt-[8rem] my-auto mx-0">
       {accounts &&
         accounts?.map(
           (

@@ -69,6 +69,7 @@ export default function Cash() {
   const form = useForm<z.infer<typeof CashSchema>>({
     resolver: zodResolver(CashSchema),
     defaultValues: {
+      cash_action: "",
       client_uuid: "",
       employee_uuid: "",
       account_uuid: "",
@@ -147,7 +148,7 @@ export default function Cash() {
                       <FormLabel>Cash action</FormLabel>
                       <FormControl>
                         <Input
-                          id="cash-action"
+                          id="cash_action"
                           type="text"
                           placeholder="Cash action"
                           {...field}
@@ -168,7 +169,7 @@ export default function Cash() {
                       <FormLabel>Client ID</FormLabel>
                       <FormControl>
                         <Input
-                          id="to_uuid"
+                          id="client_uuid"
                           type="text"
                           placeholder="Client ID"
                           {...field}

@@ -23,14 +23,15 @@ def helpers():
     }), 200
 
 
-@api.route("/search", methods=["POST"])
+@api.route("/simple_search", methods=["POST"])
 def searchAny():
     data = request.get_json()
 
     valid, message = propChecker({
         "property": (str, "Property to search", True),
         "value": (str, "Value to search", True),
-        "node_type": (str, "Type of the node to search", True)
+        "node_type": (str, "Type of the node to search", True),
+        "bank_uuid": (str, "UUID of the bank", True)
     }, data)
 
     if not valid:
@@ -38,11 +39,18 @@ def searchAny():
             "message": message
         }), 400
 
-    query = f"""
-    MATCH (n:{data["node_type"]})
-    WHERE n.{data["property"]} CONTAINS '{data["value"]}'
-    RETURN n
-    """
+    if data["bank_uuid"] != "NOT_USED":
+        query = f"""
+        MATCH (n:{data["node_type"]})
+        WHERE n.{data["property"]} CONTAINS '{data["value"]}' AND n.bank_uuid = '{data["bank_uuid"]}'
+        RETURN n
+        """
+    else:
+        query = f"""
+        MATCH (n:{data["node_type"]})
+        WHERE n.{data["property"]} CONTAINS '{data["value"]}'
+        RETURN n
+        """
 
     response = conn.run(query)
 
@@ -53,5 +61,5 @@ def searchAny():
 
     return jsonify({
         "message": "Found",
-        "clients": [node2Dict(record["n"]) for record in response["response"]]
+        "nodes": [node2Dict(record["n"]) for record in response["response"]]
     }), 200

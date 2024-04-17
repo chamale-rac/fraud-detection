@@ -53,8 +53,8 @@ const Login = () => {
     // If employee use employee login 'employee/login' else use 'client/login'
     const url = data.employee ? 'employee/login' : 'client/login'
     const navigateTo = data.employee
-      ? '/employee/dashboard'
-      : '/dashboard/client'
+      ? "/employee/dashboard"
+      : "/client/dashboard"
 
     fetch(`${import.meta.env.VITE_BASE_URL}/${url}`, {
       method: 'POST',
@@ -74,9 +74,9 @@ const Login = () => {
       })
       .then((data) => {
         // Save token to local
-        localStorage.setItem('user', data.user)
-        localStorage.setItem('uuid', data.uuid)
-        localStorage.setItem('bank_uuid', data.bank_uuid)
+        localStorage.setItem("user", data.user)
+        localStorage.setItem("uuid", data.uuid)
+        localStorage.setItem("bank_uuid", data.bank_uuid)
         // Redirect to dashboard
         navigate(navigateTo)
       })

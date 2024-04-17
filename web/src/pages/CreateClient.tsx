@@ -195,10 +195,10 @@ export default function CreateClient() {
   }
 
   return (
-    <article className="flex flex-row items-center justify-center min-h-screen">
+    <article className="flex flex-row items-center justify-center min-h-screen mt-[1rem]">
       <Card className="w-[350px]">
         <CardHeader>
-          <CardTitle>Create Client</CardTitle>
+          <CardTitle>Create Client 👤</CardTitle>
           <CardDescription>Create a new client.</CardDescription>
         </CardHeader>
         <CardContent>

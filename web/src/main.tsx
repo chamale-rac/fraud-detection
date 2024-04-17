@@ -7,7 +7,11 @@ import EmployeeDashboard from "./pages/EmployeeDashboard"
 import CreateAccount from "./pages/CreateAccount"
 import CreateClient from "./pages/CreateClient"
 import ClientTransaction from "./pages/ClientTransaction"
+import Client from "./pages/Client"
 import Cash from "./pages/Cash"
+import Employee from "./pages/Employee"
+import Admin from "./pages/Admin"
+import MyAccounts from "./pages/MyAccounts"
 import "./index.css"
 
 const router = createBrowserRouter([
@@ -24,28 +28,30 @@ const router = createBrowserRouter([
     element: <Login />,
   },
   {
-    path: "/dashboard/client",
-    element: <div>Client Dashboard</div>,
+    path: "/admin",
+    element: <Admin />,
+    children: [
+      { path: "/admin/dashboard", element: <div>Admin dashboard</div> },
+    ],
   },
   {
-    path: "/employee/dashboard",
-    element: <EmployeeDashboard />,
+    path: "/client",
+    element: <Client />,
+    children: [
+      { path: "/client/dashboard", element: <div>Dashboard</div> },
+      { path: "/client/account", element: <CreateAccount /> },
+      { path: "/client/my_accounts", element: <MyAccounts /> },
+      { path: "/client/transaction", element: <ClientTransaction /> },
+    ],
   },
   {
-    path: "/employee/client/create",
-    element: <CreateClient />,
-  },
-  {
-    path: "/client/account/create",
-    element: <CreateAccount />,
-  },
-  {
-    path: "/client/transaction",
-    element: <ClientTransaction />,
-  },
-  {
-    path: "/employee/cash",
-    element: <Cash />,
+    path: "/employee",
+    element: <Employee />,
+    children: [
+      { path: "/employee/dashboard", element: <EmployeeDashboard /> },
+      { path: "/employee/client", element: <CreateClient /> },
+      { path: "/employee/cash", element: <Cash /> },
+    ],
   },
 ])
 

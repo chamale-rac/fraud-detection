@@ -27,7 +27,17 @@ export default function Employee() {
                 size: "sm",
               })}
             >
-              Client 👤
+              Clients 👤
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="create"
+              className={buttonVariants({
+                size: "sm",
+              })}
+            >
+              Create ➕
             </Link>
           </li>
           <li>

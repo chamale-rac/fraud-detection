@@ -12,6 +12,7 @@ import Cash from "./pages/Cash"
 import Employee from "./pages/Employee"
 import Admin from "./pages/Admin"
 import MyAccounts from "./pages/MyAccounts"
+import Clients from "./pages/Clients"
 import "./index.css"
 
 const router = createBrowserRouter([
@@ -49,7 +50,8 @@ const router = createBrowserRouter([
     element: <Employee />,
     children: [
       { path: "/employee/dashboard", element: <EmployeeDashboard /> },
-      { path: "/employee/client", element: <CreateClient /> },
+      { path: "/employee/create", element: <CreateClient /> },
+      { path: "/employee/client", element: <Clients /> },
       { path: "/employee/cash", element: <Cash /> },
     ],
   },

@@ -96,6 +96,40 @@ export default function AdminDashboard({ className, ...props }: CardProps) {
 
   const sendGroupSize = () => {
     toast({ title: 'Group size: ' + groupSize })
+
+    fetch(`${BACKEND_URL}/admin/delete_fraud_clients`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        group_size: groupSize,
+      })
+    })
+      .then((res) => {
+        console.log(res)
+        if (res.ok) {
+          return res.json()
+        }
+        return res.json().then((error) => {
+          throw new Error(error.message)
+        })
+      })
+      .then((data) => {
+        // Save token to local storage
+        setGenSharedData(data.count)
+        toast({
+          title: `${data.message} 🤢`
+          // description: data.message,
+        })
+      })
+      .catch((error) => {
+        toast({
+          title: "Error",
+          description: error.message,
+          variant: "destructive",
+        })
+      })
   }
 
   return (
@@ -105,6 +139,17 @@ export default function AdminDashboard({ className, ...props }: CardProps) {
       {
         genSharedData !== 0 && <p className="text-center mt-[1rem]">Generated {genSharedData} shared data relations 🎉</p>
       }
+      <section className="flex gap-[1rem] w-fit mx-auto mt-[2rem]">
+        <p className="text-[1.25rem] text-red-500 font-bold my-auto">Delete fradulent clients</p>
+        <Input
+          onChange={(e) => setGroupSize(parseInt(e.target.value))}
+          id="groupSize"
+          type="number"
+          placeholder="Type the cluster size"
+          className="w-[10rem]"
+        />
+        <Button onClick={sendGroupSize} variant="destructive">Submit</Button>
+      </section>
       <article className="grid grid-cols-3 gap-x-4 gap-y-12 items-center justify-center h-fit w-full px-[3rem] pt-[4rem] my-auto mx-0">
         {transactions &&
         transactions?.length > 0 &&
@@ -140,17 +185,6 @@ export default function AdminDashboard({ className, ...props }: CardProps) {
             }
           )}
       </article>
-      <section className="flex gap-[1rem] w-fit mx-auto mt-[2rem]">
-        <p className="text-[1.25rem] text-red-500 font-bold my-auto">Delete fradulent clients</p>
-        <Input
-          onChange={(e) => setGroupSize(parseInt(e.target.value))}
-          id="groupSize"
-          type="number"
-          placeholder="Type the cluster size"
-          className="w-[5rem]"
-        />
-        <Button onClick={sendGroupSize} variant="destructive">Submit</Button>
-      </section>
       <Toaster />
     </>
   )

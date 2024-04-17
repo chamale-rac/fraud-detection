@@ -30,8 +30,8 @@ export default function Clients({ className, ...props }: CardProps) {
   const [filter, setFilter] = useState("name")
 
   useEffect(() => {
-    console.log("clients:", clients)
-  }, [clients])
+    searchClient()
+  }, [])
 
   const searchClient = () => {
     toast({ title: "Searching 🔍" })
@@ -77,11 +77,7 @@ export default function Clients({ className, ...props }: CardProps) {
   const handleActivateClient = (active: boolean, client_uuid: string) => {
     toast({ title: "Activating client" })
 
-    let url = `/helpers/user_activate`
-
-    if (active) {
-      url = `/helpers/user_deactivate`
-    }
+    const url = `/client/active_desactive`
 
     fetch(`${BACKEND_URL}${url}`, {
       method: "POST",
@@ -89,8 +85,8 @@ export default function Clients({ className, ...props }: CardProps) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        uuid_employee: localStorage.getItem("uuid") || "",
-        uuid_client: client_uuid,
+        employee_uuid: localStorage.getItem("uuid") || "",
+        client_uuid: client_uuid,
         motive: "Because yes!!!",
       }),
     })
@@ -109,6 +105,7 @@ export default function Clients({ className, ...props }: CardProps) {
           title: `Client ${active ? "deactivated" : "activated"} 🙌🏼`,
           description: data.message,
         })
+        searchClient()
       })
       .catch((error) => {
         toast({
@@ -134,10 +131,10 @@ export default function Clients({ className, ...props }: CardProps) {
             <SelectValue placeholder="Select one of your accounts" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="dpi">DPI</SelectItem>
             <SelectItem value="name">Name</SelectItem>
             <SelectItem value="surname">Surname</SelectItem>
             <SelectItem value="birthday">Birthday</SelectItem>
+            <SelectItem value="dpi">DPI</SelectItem>
           </SelectContent>
         </Select>
         <Button onClick={searchClient}>Search</Button>

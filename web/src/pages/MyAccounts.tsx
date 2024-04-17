@@ -32,12 +32,12 @@ type CardProps = React.ComponentProps<typeof Card>
 
 export default function MyAccounts({ className, ...props }: CardProps) {
   const [accounts, setAccounts] = useState([])
-  const [transactions, setTransactions] = useState([1,2,3])
+  const [transactions, setTransactions] = useState([])
   const [transactionsDialog, setTransactionsDialog] = useState(false)
 
   useEffect(() => {
-    if (accounts) console.log("accounts:", accounts)
-  }, [accounts])
+    if (transactions) console.log("transactions:", transactions)
+  }, [transactions])
 
   useEffect(() => {
     // get user bank accounts
@@ -79,6 +79,40 @@ export default function MyAccounts({ className, ...props }: CardProps) {
   const getTransactions = (account_uuid: string) => {
     toast({title: "Getting all transactions"})
 
+    fetch(`${BACKEND_URL}/transaction/transactions_history`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        account_uuid: account_uuid,
+      }),
+    })
+      .then((res) => {
+        // console.log(res)
+        if (res.ok) {
+          return res.json()
+        }
+        return res.json().then((error) => {
+          throw new Error(error.message)
+        })
+      })
+      .then((data) => {
+        // Save token to local storage
+        setTransactions(data.transactions)
+        toast({
+          title: "Transaction history ✨",
+          description: data.message,
+        })
+      })
+      .catch((error) => {
+        toast({
+          title: "Error",
+          description: error.message,
+          variant: "destructive",
+        })
+      })
+
   }
 
   return (
@@ -87,6 +121,7 @@ export default function MyAccounts({ className, ...props }: CardProps) {
         accounts?.map(
           (
             account: {
+              uuid: string
               nickname: string
               account_type: string
               balance: number
@@ -105,6 +140,7 @@ export default function MyAccounts({ className, ...props }: CardProps) {
                     {(account.nickname as string) || "My account"}
                   </CardTitle>
                   <CardDescription>{account.account_type}</CardDescription>
+                  <CardDescription>{account.uuid}</CardDescription>
                 </CardHeader>
                 <CardContent className="grid gap-4">
                   <article className="mb-4 grid grid-cols-[25px_1fr] items-start pb-4 last:mb-0 last:pb-0">
@@ -120,7 +156,11 @@ export default function MyAccounts({ className, ...props }: CardProps) {
                   </article>
                 </CardContent>
                 <CardFooter>
-                  <Button onClick={() => setTransactionsDialog(true)} className="w-full">View transactions</Button>
+                  <Button onClick={() => {
+                    setTransactions([])
+                    getTransactions(account.uuid)
+                    setTransactionsDialog(true)
+                  }} className="w-full">View transactions</Button>
                 </CardFooter>
               </Card>
             )
@@ -129,7 +169,7 @@ export default function MyAccounts({ className, ...props }: CardProps) {
       <Toaster />
 
       <Dialog open={transactionsDialog}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="w-[80rem]">
         <DialogHeader>
           <DialogTitle className="text-[1.5rem]">Transactions</DialogTitle>
           <DialogDescription className="text-[1.1rem]">
@@ -139,17 +179,21 @@ export default function MyAccounts({ className, ...props }: CardProps) {
         <div className="flex items-center space-x-2">
           <div className="grid flex-1 gap-2">
             {
-              transactions &&
-              transactions.map((transaction: {amount: number, date: string}, key) => (
-                <article key={key} className="grid grid-cols-3 gap-2">
-                  {/* <p>{transaction.amount}</p> */}
-                  <p>100.00</p>
-                  {/* <p>{transaction.date}</p> */}
-                  <p>11th april 2024</p>
-                  {/* <p>{transaction.type}</p> */}
-                  <p>Cash In</p>
-                </article>
-              ))
+              transactions?.length > 0 ? (
+                transactions?.map((transaction: {labels: string[], amount: number, date: string, status: string, description: string}, key) => {
+                  return (
+                    <article key={key} className="flex flex-col gap-[1rem] mb-[1rem] border-[2px] rounded p-[1rem]">
+                      <p>{transaction.labels.join(", ")}</p>
+                      <p className="ml-[1rem] font-bold">$ {transaction.amount}</p>
+                      <p className="ml-[1rem]">{transaction.date}</p>
+                      <p className="ml-[1rem]">{transaction.status}</p>
+                      <p className="ml-[1rem]">{transaction.description}</p>
+                    </article>
+                  )
+                })
+              ) : (
+                <p>No transactions available</p>
+              )
             }
           </div>
         </div>

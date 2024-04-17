@@ -26,13 +26,13 @@ type CardProps = React.ComponentProps<typeof Card>
 
 export default function Clients({ className, ...props }: CardProps) {
   const [accounts, setAccounts] = useState([])
+  const [clients, setClients] = useState([])
   const [searchValue, setSearchValue] = useState("")
   const [filter, setFilter] = useState("name")
 
   useEffect(() => {
-    console.log("searchValue:", searchValue)
-    console.log("filter:", filter)
-  }, [searchValue, filter])
+    console.log("clients:", clients)
+  }, [clients])
 
   useEffect(() => {
     if (accounts) console.log("accounts:", accounts)
@@ -50,7 +50,7 @@ export default function Clients({ className, ...props }: CardProps) {
       }),
     })
       .then((res) => {
-        console.log(res)
+        // console.log(res)
         if (res.ok) {
           return res.json()
         }
@@ -75,7 +75,46 @@ export default function Clients({ className, ...props }: CardProps) {
       })
   }, [])
 
-  const searchClient = () => {}
+  const searchClient = () => {
+    toast({ title: "Searching 🔍" })
+
+    fetch(`${BACKEND_URL}/helpers/simple_search`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        property: filter,
+        value: searchValue,
+        node_type: "Client",
+      }),
+    })
+      .then((res) => {
+        // console.log(res)
+        if (res.ok) {
+          return res.json()
+        }
+        return res.json().then((error) => {
+          throw new Error(error.message)
+        })
+      })
+      .then((data) => {
+        // Save token to local storage
+        toast({
+          title: "Clients found 🙌🏼",
+          description: data.message,
+        })
+        console.log("nodes:", data.nodes)
+        // setClients(data.nodes)
+      })
+      .catch((error) => {
+        toast({
+          title: "Error",
+          description: error.message,
+          variant: "destructive",
+        })
+      })
+  }
 
   return (
     <>
@@ -101,8 +140,8 @@ export default function Clients({ className, ...props }: CardProps) {
         <Button onClick={searchClient}>Search</Button>
       </section>
       <article className="grid grid-cols-3 gap-x-4 gap-y-12 items-center justify-center h-fit w-full px-[3rem] pt-[6rem] my-auto mx-0">
-        {accounts &&
-          accounts?.map(
+        {clients &&
+          clients?.map(
             (
               account: {
                 nickname: string

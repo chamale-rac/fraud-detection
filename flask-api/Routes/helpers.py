@@ -23,8 +23,8 @@ def helpers():
     }), 200
 
 
-@api.route("/search", methods=["POST"])
-def searchAny():
+@api.route("/simple_search", methods=["POST"])
+def simpleSearch():
     data = request.get_json()
 
     valid, message = propChecker({
@@ -53,5 +53,5 @@ def searchAny():
 
     return jsonify({
         "message": "Found",
-        "clients": [node2Dict(record["n"]) for record in response["response"]]
+        "nodes": [node2Dict(record["n"]) for record in response["response"]]
     }), 200

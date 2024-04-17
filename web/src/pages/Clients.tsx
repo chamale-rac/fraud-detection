@@ -74,6 +74,51 @@ export default function Clients({ className, ...props }: CardProps) {
       })
   }
 
+  const handleActivateClient = (active: boolean, client_uuid: string) => {
+    toast({ title: "Activating client" })
+
+    let url = `/helpers/user_activate`
+
+    if (active) {
+      url = `/helpers/user_deactivate`
+    }
+
+    fetch(`${BACKEND_URL}${url}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        uuid_employee: localStorage.getItem("uuid") || "",
+        uuid_client: client_uuid,
+        motive: "Because yes!!!",
+      }),
+    })
+      .then((res) => {
+        // console.log(res)
+        if (res.ok) {
+          return res.json()
+        }
+        return res.json().then((error) => {
+          throw new Error(error.message)
+        })
+      })
+      .then((data) => {
+        // Save token to local storage
+        toast({
+          title: `Client ${active ? "deactivated" : "activated"} 🙌🏼`,
+          description: data.message,
+        })
+      })
+      .catch((error) => {
+        toast({
+          title: "Error",
+          description: error.message,
+          variant: "destructive",
+        })
+      })
+  }
+
   return (
     <>
       <section className="flex gap-[1rem] w-fit mx-auto mt-[2rem]">
@@ -141,7 +186,7 @@ export default function Clients({ className, ...props }: CardProps) {
                     </article>
                   </CardContent>
                   <CardFooter>
-                    <Button className="w-full">
+                    <Button onClick={() => handleActivateClient(client.active, client.uuid)} className="w-full">
                       {client.active ? "Deactivate" : "Activate"}
                     </Button>
                   </CardFooter>

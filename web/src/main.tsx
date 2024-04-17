@@ -13,6 +13,7 @@ import Employee from "./pages/Employee"
 import Admin from "./pages/Admin"
 import MyAccounts from "./pages/MyAccounts"
 import Clients from "./pages/Clients"
+import AdminDashboard from "./pages/AdminDashboard"
 import "./index.css"
 
 const router = createBrowserRouter([
@@ -32,7 +33,7 @@ const router = createBrowserRouter([
     path: "/admin",
     element: <Admin />,
     children: [
-      { path: "/admin/dashboard", element: <div>Admin dashboard</div> },
+      { path: "/admin/dashboard", element: <AdminDashboard />},
     ],
   },
   {

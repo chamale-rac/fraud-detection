@@ -1,51 +1,101 @@
-name,country,estimated_value,established,category,legal_entity,uuid
-King-Brown,Jamaica,75761899,1977,"Surveyor, minerals",LLC,251188a0-df16-4a95-84a8-d6b927eec729
-"King, Moss and Chambers",Norfolk Island,6535030,1995,Interior and spatial designer,Inc,7a030d07-9e05-4d82-b97c-4de00f75eda5
-Vega-Wilkerson,Cook Islands,12808405,1976,Media planner,PLC,af46802d-6818-45ef-b414-dffd94cf83f1
-"Hudson, Francis and Rogers",San Marino,2447535,2011,"Development worker, community",PLC,8dabc96a-f723-4d14-822a-30d71891cb11
-"Campbell, Ferguson and Nicholson",Thailand,46084402,1980,Artist,PLC,8093c84a-e253-452d-ba7d-a4fc991ab594
-Rose-Harding,Palestinian Territory,81937212,1989,"Sales professional, IT",LLC,64484b63-7ea9-4ec8-a1c2-f3691f02b0fb
-"Harrell, Williams and Brown",Lithuania,99108760,1972,Dentist,Group,2b63f574-24d8-4035-86a8-ae6b0f609e16
-"Pace, Davila and Gardner",Croatia,15758880,2018,Chemical engineer,PLC,d2b8aea8-feea-4471-938a-f26bb376621c
-Wood PLC,North Macedonia,7921752,1993,Dispensing optician,Ltd,1709bf08-f4ce-4537-9550-a93fbdd483f2
-Carter-Johnson,Saint Kitts and Nevis,64340773,1986,Physiotherapist,Ltd,65995740-8ce0-4e61-a114-0439ef3bbeaa
-Clark and Sons,British Virgin Islands,74464730,2020,Chartered loss adjuster,and Sons,49c4df84-6e73-4b30-a765-7b1f326d9a55
-Hoover Group,Germany,36839342,1998,Environmental health practitioner,Inc,3a4c59f2-bc7d-4d9d-b269-aab88cea82a5
-Beard PLC,Gambia,31360013,1986,Occupational psychologist,PLC,e5b66cc0-f24a-406f-a03d-e89b089c3981
-Lynch and Sons,United States Virgin Islands,71855657,2020,Production manager,Ltd,cf6b0500-17f1-43ff-8870-89870f5cf694
-Smith-Marshall,Indonesia,84648454,1983,Health service manager,Inc,37c3eb4b-716e-4495-806d-eb6654b66787
-Rogers-Freeman,Palestinian Territory,31153828,1986,Nutritional therapist,LLC,db06261e-e22b-4c5e-9e55-b4b9a7e6ae8a
-Frank-Clark,Pakistan,38031481,2002,Travel agency manager,Group,5dc610bd-a1c2-45fc-80cd-939e4a322e75
-"Madden, Phillips and Wise",Mauritius,92840057,1973,"Teacher, English as a foreign language",Ltd,ecf64dbc-a9e6-4b2c-b5f6-fed6c4fcd95e
-"Young, Mccarty and Mclean",Thailand,45242896,1980,Video editor,LLC,309b6083-0622-4be1-9f56-c83216a48990
-Burns-Fowler,British Indian Ocean Territory (Chagos Archipelago),46713528,1996,Recruitment consultant,LLC,1e408a12-6b95-4fe8-9ce7-2a3c4d605240
-"Vang, Gonzalez and Parker",Svalbard & Jan Mayen Islands,34473008,2001,"Designer, industrial/product",PLC,0ac41180-2a70-4d80-8e5a-4461d9f4d9da
-"Hernandez, Swanson and Schroeder",United States Virgin Islands,54552369,1989,"Physicist, medical",LLC,57351820-1e40-4f3a-882b-1942b652a0fc
-"Haas, Nguyen and Ibarra",Kyrgyz Republic,80965425,2014,Therapeutic radiographer,and Sons,6c42739e-a1e2-444e-a084-021512726233
-Holden Group,Malta,3228645,1974,Medical technical officer,Group,5a09b2f2-f495-4ed3-8bf2-38a7909df496
-"Terry, Brewer and Cummings",Serbia,85851340,2011,Sports administrator,PLC,f2da8469-8557-42e1-ba49-f3013216acca
-"Macias, Reed and Peterson",Lesotho,33548423,2000,"Production assistant, television",and Sons,44481f1f-92e8-48e1-8de6-dee2a045948d
-Williams-Jackson,Armenia,10145772,2013,"Editor, commissioning",Group,1362ec19-7511-426e-a673-f283c473eeb8
-Johnson PLC,Singapore,14879661,2019,"Research officer, trade union",Inc,b62cc226-cbcd-4fb5-aed5-dfd82d51b626
-Thomas Inc,Cook Islands,87109953,1989,"Designer, furniture",Ltd,0f18c76a-0853-439b-8316-2d3a40d0e978
-Sanchez LLC,Martinique,14173695,2018,Risk analyst,LLC,f6c8f3ad-14e6-4401-9cde-4e103691e90d
-"Johnson, Arroyo and Mcdonald",Spain,53345836,1973,Chief Strategy Officer,PLC,f1ab670e-904c-4e0e-90b5-71c9481b628f
-Pena PLC,Bahamas,22631039,1974,Video editor,Inc,dcad2709-bdf3-4850-8d7c-5a3e4c3d5ba1
-Davis-Baxter,Liechtenstein,36427108,1976,Museum education officer,and Sons,197b41ac-9558-4c90-b371-94728491cba9
-"Leonard, Reid and Davidson",Seychelles,55416292,2020,IT technical support officer,LLC,272e6fa4-19fe-48a8-847d-2902f5afa6a8
-King Group,Saint Pierre and Miquelon,91846878,1981,"Teacher, English as a foreign language",LLC,0c1e8dc3-a8a9-4d17-a903-b770bbb99667
-Stokes Ltd,Malaysia,66275889,1979,"Horticulturist, commercial",Inc,8560b2b3-99bd-454c-aab3-b435780d374d
-Rodriguez-Thomas,Cote d'Ivoire,18411294,2002,Ambulance person,Ltd,85e19fe2-7bc4-4b2c-9748-ef787b82ab12
-"Martinez, Harrison and Rodriguez",Moldova,21690398,1998,"Runner, broadcasting/film/video",PLC,725b5951-05af-477b-922e-55c69ab9735a
-Taylor PLC,Belgium,74556060,2000,Chief Executive Officer,Ltd,ddb2cf8d-d038-41b4-83a5-d8db86adf49c
-"Henderson, Flores and Reynolds",France,18087625,1970,Equities trader,Group,92ea474e-c7cf-4628-9d80-2fff47b0f264
-"Cooley, Wright and Solis",Honduras,74332622,1985,Theatre director,PLC,1ed9813a-09b8-49e3-b5cc-bc602f0e8c23
-"Williams, Harmon and Parker",Cayman Islands,45689943,2012,Hospital pharmacist,LLC,7b884d84-9a57-431c-8d0f-fa4d43066090
-Lynn-Allen,Kazakhstan,22476804,1971,"Conservator, museum/gallery",and Sons,3e94847a-95a1-4a26-9718-54e7908245c6
-Schroeder-Abbott,Yemen,49999416,2005,Legal executive,and Sons,00b57cef-75af-4594-b6bf-3824c8a95b5e
-Horn PLC,Australia,15497174,2006,Automotive engineer,Inc,5f079f0d-a815-47bf-afcc-34666eb55ff7
-Brown-Cardenas,British Indian Ocean Territory (Chagos Archipelago),57053158,1991,"Restaurant manager, fast food",Group,f8e4f5a9-7017-45b1-9726-109be148f2dc
-Roach-Le,France,60217471,1970,"Designer, interior/spatial",Group,9bd54e71-2a65-4630-b46c-3e6c754a7dc6
-Bradley-Lopez,Gabon,11242033,2007,Chief Financial Officer,Ltd,0bf8eefc-7880-4c14-8a17-7cc5aff86a99
-"Ruiz, Hoffman and Bell",Panama,83277693,1991,Lawyer,PLC,245be751-cd89-4554-b28b-1897b6cae567
-Mcdonald LLC,Grenada,50001736,2021,Plant breeder/geneticist,Ltd,fcb8d194-dfcb-4ded-a2f8-b127624dbf65
+uuid,name,country,estimated_value,established,category,legal_entity
+a0ed56b0-f7e7-47fe-a6fa-546c15c64209,Ferguson Ltd,Bhutan,22708934,2015,"Secretary, company",LLC
+9e915fbf-6563-4601-9126-199398de1832,Zhang LLC,Andorra,51582756,2018,Best boy,Inc
+42895d93-ff7b-4e69-812b-8bea493184a9,Turner-Evans,Nepal,19735248,2018,Paediatric nurse,PLC
+32914ac7-a1ff-4f9b-b318-836a4f01aed5,Khan-Owens,Syrian Arab Republic,66112372,2015,"Merchandiser, retail",Ltd
+d87ba2ed-9c08-4678-adc6-fe28adc77d98,Reyes-Smith,United States Virgin Islands,30160136,2001,Water engineer,LLC
+20ab2c5c-c776-4db9-9596-0a5c651d0b09,"Bailey, Davis and Barrett",Australia,87485832,2014,"Scientist, forensic",and Sons
+8e5bcc3a-ff53-4759-9661-ee501110600a,Clark-Navarro,Tonga,97868792,1982,Operations geologist,and Sons
+1d8d64e5-fe21-421d-928b-8d668e792bd9,Cooper-Perry,Sweden,26805329,2022,Chief Technology Officer,Ltd
+1bea3028-e80e-45dd-b04e-42fffc9f6b15,Morton LLC,Estonia,12887198,1981,"Engineer, automotive",Group
+80c51af7-e84e-4ec9-84b6-6466fb9359f4,Harvey PLC,Guinea,4187116,1972,Statistician,Inc
+f1b05dd5-a883-41d7-9679-a7e3cf0f87d1,Barker-Gilmore,Montenegro,34181568,2017,Early years teacher,Group
+2bbddbb7-bbad-483b-88f0-36a0e5a4c594,Carpenter PLC,Christmas Island,82143190,1988,Careers information officer,PLC
+5eec1a34-36a0-42a9-9c6b-6efe347bccd9,Wood Inc,Antigua and Barbuda,49624245,1977,Drilling engineer,PLC
+172ac7f6-3651-47c4-85c0-d65f8feaeafb,Robinson PLC,Cambodia,92661777,2007,Oncologist,and Sons
+f24ce5ce-6ef5-42b9-914b-1ba7da6e4f4c,"Gallagher, Brown and Pena",Qatar,47426301,1988,Armed forces logistics/support/administrative officer,LLC
+8e7d0511-aac9-49f1-86ba-ab06969541d6,"Beard, Howard and Thompson",Holy See (Vatican City State),9577051,2002,"Surveyor, building",and Sons
+3b43f907-cef9-4575-a72d-9ba32acfc395,White-Fleming,Belgium,9128509,2021,"Programmer, applications",PLC
+668f8a38-ecce-4b6b-9c0e-2d570dc6b8fc,"Weeks, Fox and Greer",Ghana,9966120,1970,Counsellor,PLC
+58457669-f3a7-49b4-bf30-c0248ff69bc0,"Rodriguez, Clark and Lee",Honduras,69918208,2009,Waste management officer,Inc
+21d1fef6-9ee9-4d4c-969d-7d19538f693b,"Willis, Walker and Ortega",Pitcairn Islands,9232673,1999,Occupational therapist,Inc
+150f753c-fc5a-4017-85f0-9bdeb6eebb22,Miller-Hale,Netherlands Antilles,77354883,2012,"Programmer, applications",and Sons
+4aaad543-d569-4bd4-8a66-7c7e6bc97e5a,"Campbell, Rojas and Holloway",British Indian Ocean Territory (Chagos Archipelago),73778880,1997,Dealer,PLC
+8f872c4a-480b-4737-b8b1-ce6ce9ed71a3,"Jones, Cook and Stevenson",El Salvador,74572586,1991,Freight forwarder,LLC
+53604252-da97-4254-9ef2-fa9fc293c634,Hughes Inc,Western Sahara,43568908,2001,Visual merchandiser,LLC
+f3fcd5f9-6e21-4fbd-b0ba-2c0a3a2bd024,Hernandez Inc,Belize,45637323,2018,Special educational needs teacher,PLC
+0d57b811-2bf0-4b5a-80e4-fc016a07b324,"Bryant, Morgan and Koch",Palestinian Territory,99155465,1991,Commercial horticulturist,and Sons
+d1735667-0d01-4dc1-b219-4bdda5f0fb4e,Campbell-Barnes,Grenada,95600961,1996,Social worker,LLC
+e883e00d-1210-48fb-b25f-9602392cd4b0,Waller-Hall,Bulgaria,53144040,2022,Scientific laboratory technician,LLC
+b3c9b51b-b289-422c-91bd-ce27c07842b6,Ellis-Sanchez,Djibouti,69715521,1972,Technical sales engineer,PLC
+8c144f07-b002-4a17-aaf8-19feb4e889ad,"Levy, Simpson and Lucas",Hungary,54609525,2005,Recruitment consultant,and Sons
+4eea8a84-769b-4fec-b153-831ba511900a,Hanna Group,Norway,50581170,1984,Broadcast journalist,Group
+7b6db9f5-f2b8-4564-b188-09ff7ea95069,Pierce-Hernandez,Belgium,94658297,1997,Financial manager,and Sons
+6f062357-841d-4e3d-96f3-9dcba56531b7,Carney PLC,Lao People's Democratic Republic,22923173,1982,Sports therapist,Ltd
+c2bdbcdc-f55c-410a-bb6f-8d8005df3f91,"Odonnell, Maldonado and Silva",Chad,35687379,1991,"Doctor, general practice",LLC
+b1089816-a051-45b3-b494-df6ab4507475,"Ellison, Gonzalez and Baker",Nigeria,16287685,1974,"Nurse, learning disability",Inc
+6e16e19a-50f3-442e-9138-279acec4e635,"Barr, Lane and Anderson",Turkey,6672822,1996,"Surveyor, commercial/residential",Inc
+c7888ffc-2f6b-4fe2-b40e-d8dc60535ee8,Johnson PLC,Sao Tome and Principe,20046973,1971,Magazine journalist,Ltd
+ff1065d7-6548-4e1e-a1a2-da14440b7469,Jones-Oliver,Malta,95944691,1981,"Engineer, civil (contracting)",Ltd
+c98eb443-0a39-476c-b59b-8aa06732e3c9,Hernandez-Walters,Korea,14828615,1997,"Journalist, magazine",PLC
+edefc661-a046-4de1-9a2a-5a3362b0dacd,"Boyd, Flores and Ellis",Lithuania,59342289,1997,Chief Technology Officer,Inc
+626f9ec2-95ae-4591-8304-78aca38dc67a,Lopez-Welch,Anguilla,35781648,2023,Intelligence analyst,Group
+7db308e2-8cc1-471c-9584-9629803062d9,Sanders-Jennings,Sao Tome and Principe,92531936,2001,"Therapist, nutritional",Group
+5cf637df-79f1-4b79-8996-624b31322283,Castro-Marshall,Yemen,23137001,2019,"Librarian, academic",and Sons
+a2f96486-7b58-49d1-8602-77feaeb12725,"Rodgers, Harris and Atkins",Austria,12503300,2008,Analytical chemist,Ltd
+c2fdb153-b545-412c-9cac-c7ca4fc59edd,"Ali, Mccarthy and Valdez",Puerto Rico,25696449,2010,"Lecturer, higher education",PLC
+691c851d-b62e-4f33-a8fc-38718f52e7a4,"Horton, Hill and Fuentes",British Virgin Islands,20091282,2023,Teaching laboratory technician,Ltd
+43de0380-bdaf-4600-84b8-4bd44df6eeac,Hays PLC,Equatorial Guinea,81581330,2000,Podiatrist,PLC
+85630045-2376-40af-b573-a238ab5239f8,Payne-Owen,Vanuatu,42659949,1983,Ceramics designer,Group
+eb136d46-0d1e-4ba7-a306-7de1d99aa2fc,Kelley-Phillips,Greenland,45416294,1975,"Designer, interior/spatial",Ltd
+16c67678-7651-4a44-ab89-0514574e8d32,"Wilkins, Jackson and Davis",Papua New Guinea,22066910,1995,Dramatherapist,Inc
+04de1093-5e5c-4ece-a41a-a01e4a330f6b,Gonzalez-Jones,Sri Lanka,13126213,2019,Make,Ltd
+95e4d2aa-e38c-406c-b2eb-f6da7f98d2b0,Knight and Sons,Hong Kong,70032970,1972,Forensic scientist,LLC
+e0b9e5f0-48f7-4df3-ba36-b6961696dcbd,Martinez Ltd,Mongolia,58413717,1988,Food technologist,Group
+02724760-be34-4386-b189-7936855a01de,"Gross, Yu and Marks",North Macedonia,45054758,2003,"Engineer, chemical",Ltd
+ff0b7efa-b8ac-4d40-806a-ab268fed7301,Hernandez Ltd,Uganda,20540520,2015,Interior and spatial designer,PLC
+1eb02ff3-6ab8-412b-a570-1dc37380fd8c,"Carter, Johnson and Allen",Kyrgyz Republic,7809814,2002,Dealer,PLC
+ff9a1714-43c2-4203-b264-ff431fa8549c,"Brown, Simon and Nelson",North Macedonia,97830228,1995,Financial controller,PLC
+c624ce46-c2c5-4d7e-8c7f-313f790b0864,Arellano-Cervantes,Bermuda,81670738,2005,"Therapist, drama",Inc
+6f40a3e5-67eb-4516-84b5-580c591e4c84,"Jenkins, Richardson and Briggs",Somalia,16446175,2004,Sports coach,LLC
+1535b5e9-768a-445b-b5d4-dc1e4d0d37ec,"Winters, Wilcox and Wilson",Spain,20647215,2002,"Programme researcher, broadcasting/film/video",Group
+2be5556a-b3d6-4321-b915-af28ad7f7a85,Brown Ltd,Spain,23511183,2019,"Nurse, mental health",Ltd
+e5fb0bbe-ce53-49db-b37c-3e54c3068d4d,Page Ltd,Mauritania,63821134,1976,Pensions consultant,PLC
+4d46c8dd-b914-4f24-b825-071fec96d6f9,Ward and Sons,Niger,78113416,2000,Music tutor,Ltd
+d91b0fad-6248-4136-b4b3-faf5806c73ad,"Hansen, Torres and Cowan",Norfolk Island,64307429,1986,Museum/gallery exhibitions officer,Inc
+551fe6a9-4cab-45da-af24-05f40e533d29,Turner-Bennett,Western Sahara,61780699,2014,Nature conservation officer,Ltd
+b09547e1-210e-4e28-ac77-e424e5e9faf8,"Porter, Hunter and Mccall",Sri Lanka,75746347,2001,Fast food restaurant manager,Group
+c2ebfa6d-04b5-479c-b778-f5241c761b2f,Foley-Reyes,Thailand,30930194,2007,Counsellor,Inc
+0527553d-ebe5-4422-aca1-83bd08ec87a1,Frost-Travis,Belgium,86502257,2002,"Engineer, site",and Sons
+86eeabc2-f250-4fe9-91bf-3da6a5818c19,Rogers-Jones,French Guiana,94482600,1981,Newspaper journalist,and Sons
+57162ebf-7275-4379-9f99-cf7e112ebae7,House-Davis,Algeria,45197525,1983,"Therapist, horticultural",Inc
+6c7de3de-6014-42f5-8327-fb5210c2dbfe,"Valenzuela, Herrera and Obrien",Romania,66166450,1976,"Designer, multimedia",PLC
+8387a989-c0ee-4109-b06b-8971c227f22c,Fisher-Scott,Dominican Republic,4415223,2009,"Designer, exhibition/display",LLC
+4dcbc30f-6af8-4180-b3ce-0b5466f58f02,Pacheco-Harris,Australia,27174714,1982,"Engineer, civil (contracting)",Ltd
+0d3cd7d9-2503-4b63-bec1-8ea5da31a4f1,Paul and Sons,Somalia,77330500,1972,"Accountant, chartered public finance",PLC
+cde859d4-b72d-452d-a480-f0ef4209c5ad,Evans LLC,Christmas Island,8685195,1986,Geographical information systems officer,PLC
+2b0c321f-1720-4968-bab9-f94b867ae9be,Benton LLC,Kazakhstan,7952554,1989,Dealer,PLC
+d699c5cc-8cc4-4e0b-893a-102c8104cb85,"Thomas, Dyer and Robinson",Palestinian Territory,68996403,2019,Furniture conservator/restorer,Group
+a8bff895-1cb2-47ae-b610-e7579bd6507b,Howard-Bell,Malaysia,47853469,2020,"Teacher, early years/pre",Inc
+639cad89-9448-4c05-b396-704e4685885f,Hays Ltd,New Caledonia,95123809,1984,Office manager,Group
+8643dfd7-52b1-4dc9-93b1-e58aaf03e9e6,"Austin, Hutchinson and Caldwell",Serbia,80008597,1991,Architect,Inc
+ede82782-f6ee-4b12-ad36-e50df1990f5e,Ritter-Morgan,Niger,2958037,2011,Chief Technology Officer,PLC
+ff3d0f07-4ed6-4106-89cb-636bffc32d79,"Smith, Hurley and Santiago",United Kingdom,60392437,1974,Insurance risk surveyor,Inc
+d7704a55-ccc1-4a05-a5e1-64d6703b63e5,"Noble, Fernandez and Gray",Saudi Arabia,60969356,1981,"Designer, ceramics/pottery",and Sons
+1c251091-25c8-4ec3-ae6f-ba83e0827c1e,Smith-Green,Montenegro,8538184,2022,Fish farm manager,LLC
+e9ce12bc-0b12-4ed5-977a-305d4f622210,Patel Ltd,Portugal,87505864,1980,Visual merchandiser,LLC
+db70d3f1-ecb1-4106-91d5-c1c915549253,Wright LLC,Armenia,65882988,2013,Financial manager,LLC
+85785025-6b4c-4f73-9f3a-9a07dbe4b229,"Brennan, Miller and Jones",Vanuatu,89703439,1995,"Surveyor, building control",and Sons
+88471f5a-adcd-4a48-9ea8-b9941c969410,Larson LLC,Tanzania,47052093,2019,"Scientist, marine",PLC
+c0ea811d-d094-4d7f-b239-2656e988b6d1,"Short, Martinez and Hunter",Finland,70503174,2021,Hydrogeologist,and Sons
+2b85b3f5-cc19-4ec4-af09-5101f082dc79,"Mcdonald, Sutton and Coleman",France,39838635,1976,Drilling engineer,LLC
+da096f46-bef9-4996-b4b4-377ea09791db,"Phillips, Clark and Rodriguez",Fiji,45795454,1970,"Administrator, charities/voluntary organisations",PLC
+f1df6dbf-6278-4c29-9bd0-4abbf47d032f,"Taylor, Mullins and Clements",Guinea-Bissau,33502117,1976,Agricultural consultant,LLC
+9ce70298-0a53-4f04-b860-ac49fb903f50,Edwards-Gomez,Norfolk Island,73677903,1976,Government social research officer,PLC
+3baa87d0-c52b-48f6-9957-d0a990dc6f70,"Nguyen, Scott and Herrera",Saudi Arabia,49204111,1979,Health promotion specialist,and Sons
+de1da2cd-cbeb-4338-a33d-672f7c44967d,Medina and Sons,Mozambique,38259263,1980,Press photographer,Group
+8357fa56-54fc-4a9d-849c-a7b5d4c1f23b,Morales-Lewis,Botswana,36243985,1978,Equality and diversity officer,Group
+30b7b059-8691-4aa8-b351-0f971b75d7d8,"Cobb, Lewis and Bryan",Bouvet Island (Bouvetoya),76591714,1978,Recruitment consultant,PLC
+3df1a3b0-b941-4f56-a863-3519e0b75773,Ramirez-Hood,Kenya,46687765,1984,Sports therapist,PLC
+21e490f8-50cc-496a-bfb5-2727fe03aad8,Baker PLC,Holy See (Vatican City State),64190276,2011,Research scientist (medical),and Sons
+80fb6c11-862f-41fb-b12e-a4d9c3b17506,Phillips PLC,South Georgia and the South Sandwich Islands,8332173,2004,Control and instrumentation engineer,LLC

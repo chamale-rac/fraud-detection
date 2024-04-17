@@ -34,6 +34,14 @@ function App() {
                   className={buttonVariants({
                     size: 'sm',
                   })}
+                  to='/admin/dashboard'
+                >
+                  Admin
+                </Link>
+                <Link
+                  className={buttonVariants({
+                    size: 'sm',
+                  })}
                   to='/login'
                 >
                   Get started

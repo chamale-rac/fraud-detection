@@ -428,3 +428,49 @@ def cashOut():
     return jsonify({
         "message": f"Failed to create cash out transaction with error: {response['message']}"
     }), 400
+
+@api.route("/transactions_history", methods=["POST"])
+def transactions_history():
+    data = request.get_json()
+
+    valid, message = propChecker({
+        "account_uuid": (str, "UUID of the account", True),
+    }, data)
+
+    if not valid:
+        return jsonify({
+            "message": message
+        }), 400
+
+    accountNode = Node("Account", {"uuid": data["account_uuid"]})
+    accountNode.uuid = data["account_uuid"]
+    accountExists = accountNode.match()
+    if not accountExists["success"] or len(accountExists["response"]) == 0:
+        return jsonify({
+            "message": "Account does not exist: Check the provided UUID"
+        }), 400
+
+    query = f"""
+        MATCH (account:Account {{uuid: "{data["account_uuid"]}"}})-[:FIRST_TRANSACTION]->(firstTransaction:Transaction)
+        WITH firstTransaction
+        MATCH path = (firstTransaction)-[:NEXT*]->(nextTransaction:Transaction)
+        RETURN nodes(path) AS transactions
+        ORDER BY length(path) DESC
+        LIMIT 1
+
+    """
+
+    response = conn.run(query)
+
+    if not response["success"] or len(response["response"]) == 0:
+        return jsonify({
+            "message": "No transactions found"
+        }), 404
+    
+    print(response["response"])
+    transactions = [node2Dict(record["transactions"]) for record in response["response"]][0]
+
+    return jsonify({
+        "message": "Transactions found",
+        "transactions": transactions
+    }), 200

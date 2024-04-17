@@ -429,6 +429,7 @@ def cashOut():
         "message": f"Failed to create cash out transaction with error: {response['message']}"
     }), 400
 
+
 @api.route("/transactions_history", methods=["POST"])
 def transactions_history():
     data = request.get_json()
@@ -466,9 +467,10 @@ def transactions_history():
         return jsonify({
             "message": "No transactions found"
         }), 404
-    
+
     print(response["response"])
-    transactions = [node2Dict(record["transactions"]) for record in response["response"]][0]
+    transactions = [[node2Dict(node) for node in record["transactions"]]
+                    for record in response["response"]][0]
 
     return jsonify({
         "message": "Transactions found",

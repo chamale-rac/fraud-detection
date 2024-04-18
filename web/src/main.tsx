@@ -1,65 +1,67 @@
-import React from "react"
-import ReactDOM from "react-dom/client"
-import { createBrowserRouter, RouterProvider } from "react-router-dom"
-import App from "./App"
-import Login from "./pages/Login"
-import EmployeeDashboard from "./pages/EmployeeDashboard"
-import CreateAccount from "./pages/CreateAccount"
-import CreateClient from "./pages/CreateClient"
-import ClientTransaction from "./pages/ClientTransaction"
-import Client from "./pages/Client"
-import Cash from "./pages/Cash"
-import Employee from "./pages/Employee"
-import Admin from "./pages/Admin"
-import MyAccounts from "./pages/MyAccounts"
-import Clients from "./pages/Clients"
-import AdminDashboard from "./pages/AdminDashboard"
-import "./index.css"
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import App from './App'
+import Login from './pages/Login'
+import EmployeeDashboard from './pages/EmployeeDashboard'
+import CreateAccount from './pages/CreateAccount'
+import CreateClient from './pages/CreateClient'
+import CreateEmployee from './pages/CreateEmployee'
+import ClientTransaction from './pages/ClientTransaction'
+import Client from './pages/Client'
+import Cash from './pages/Cash'
+import Employee from './pages/Employee'
+import Admin from './pages/Admin'
+import MyAccounts from './pages/MyAccounts'
+import Clients from './pages/Clients'
+import AdminDashboard from './pages/AdminDashboard'
+import './index.css'
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: '/',
     element: <App />,
   },
   {
-    path: "/about",
+    path: '/about',
     element: <div>About</div>,
   },
   {
-    path: "/login",
+    path: '/login',
     element: <Login />,
   },
   {
-    path: "/admin",
+    path: '/admin',
     element: <Admin />,
     children: [
-      { path: "/admin/dashboard", element: <AdminDashboard />},
+      { path: '/admin/dashboard', element: <AdminDashboard /> },
+      { path: '/admin/employee', element: <CreateEmployee /> },
     ],
   },
   {
-    path: "/client",
+    path: '/client',
     element: <Client />,
     children: [
-      { path: "/client/dashboard", element: <div>Dashboard</div> },
-      { path: "/client/account", element: <CreateAccount /> },
-      { path: "/client/my_accounts", element: <MyAccounts /> },
-      { path: "/client/transaction", element: <ClientTransaction /> },
+      { path: '/client/dashboard', element: <div>Dashboard</div> },
+      { path: '/client/account', element: <CreateAccount /> },
+      { path: '/client/my_accounts', element: <MyAccounts /> },
+      { path: '/client/transaction', element: <ClientTransaction /> },
     ],
   },
   {
-    path: "/employee",
+    path: '/employee',
     element: <Employee />,
     children: [
-      { path: "/employee/dashboard", element: <EmployeeDashboard /> },
-      { path: "/employee/create", element: <CreateClient /> },
-      { path: "/employee/client", element: <Clients /> },
-      { path: "/employee/cash", element: <Cash /> },
+      { path: '/employee/dashboard', element: <EmployeeDashboard /> },
+      { path: '/employee/create', element: <CreateClient /> },
+      { path: '/employee/client', element: <Clients /> },
+      { path: '/employee/cash', element: <Cash /> },
     ],
   },
 ])
 
-ReactDOM.createRoot(document.getElementById("root")!).render(
+ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <RouterProvider router={router} />
-  </React.StrictMode>
+  </React.StrictMode>,
 )

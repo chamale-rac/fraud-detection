@@ -451,14 +451,23 @@ def transactions_history():
             "message": "Account does not exist: Check the provided UUID"
         }), 400
 
+    # query = f"""
+    #     MATCH (account:Account {{uuid: "{data["account_uuid"]}"}})-[:FIRST_TRANSACTION]->(firstTransaction:Transaction)
+    #     WITH firstTransaction
+    #     MATCH path = (firstTransaction)-[:NEXT*]->(nextTransaction:Transaction)
+    #     RETURN nodes(path) AS transactions
+    #     ORDER BY length(path) DESC
+    #     LIMIT 1
+    # """
     query = f"""
-        MATCH (account:Account {{uuid: "{data["account_uuid"]}"}})-[:FIRST_TRANSACTION]->(firstTransaction:Transaction)
-        WITH firstTransaction
-        MATCH path = (firstTransaction)-[:NEXT*]->(nextTransaction:Transaction)
-        RETURN nodes(path) AS transactions
-        ORDER BY length(path) DESC
-        LIMIT 1
-
+    MATCH (account:Account {{uuid: "{data['account_uuid']}"}})-[:FIRST_TRANSACTION]->(firstTransaction:Transaction)
+    OPTIONAL MATCH path = (firstTransaction)-[:NEXT*]->(nextTransaction:Transaction)
+    RETURN CASE 
+        WHEN path IS NULL THEN [firstTransaction] 
+        ELSE nodes(path) 
+    END AS transactions
+    ORDER BY length(path) DESC
+    LIMIT 1
     """
 
     response = conn.run(query)

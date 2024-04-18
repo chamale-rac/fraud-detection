@@ -1,34 +1,31 @@
-// {
-//     "name": "FAKE2",
-//     "surname": "Chamale",
-//     "password": "password123",
-//     "birthday": "1990-01-01",
-//     "genre": "Male",
-
-//     "phone": "1234567890",
-//     "email": "john.doe@example.com",
-//     "dpi": "1234567890113",
-
-//     "street": "123 Main St",
-//     "city": "Anytown",
-//     "state": "Anystate",
-//     "country": "AnyCountry",
-//     "postal_code": "12345",
-
-//     "bank_uuid": "a866c1be-a6fe-4e17-b2eb-26f4e6b33bca",
-//     "employee_uuid":  "6bee774a-5b06-450f-90d4-a17798976082",
-
-//     "work_related_tags": ["agriculture", "textile"],
-//     "declared_income": 1000.00
-// }
-
-import * as React from 'react'
+/**
+ * 
+ * {
+    "name": "John",
+    "surname": "Doe",
+    "password": "password123",
+    "birthday": "1990-01-01",
+    "genre": "Male",
+    "phone": "+1234567890",
+    "email": "john.doe@example.com",
+    "dpi": "1234567890123",
+    "street": "123 Main St",
+    "city": "Anytown",
+    "state": "Anystate",
+    "country": "Anyland",
+    "postal_code": "12345",
+    "bank_uuid": "e8ba67c1-c443-459e-8d37-3e720c7e4343",
+    "position": "Manager",
+    "salary": 5000.0,
+    "since": "2010-01-01"
+}
+ * 
+ */
 import { Button } from '@/components/ui/button'
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   // CardFooter,
   CardHeader,
   CardTitle,
@@ -101,13 +98,13 @@ const ClientSchema = z.object({
   // employee_uuid: z.string().min(1, {
   //   message: "Employee is required",
   // }),
-  work_related_tags: z
-    .string()
-    .min(1, {
-      message: 'Work related tags is required',
-    })
-    .transform((val) => val.split(',').map((tag) => tag.trim())),
-  declared_income: z
+  position: z.string().min(1, {
+    message: 'Position is required',
+  }),
+  since: z.string().min(1, {
+    message: 'Since is required',
+  }),
+  salary: z
     .string()
     .min(1, {
       message: 'Declared income is required',
@@ -118,9 +115,7 @@ const ClientSchema = z.object({
     .transform((val) => parseFloat(val)),
 })
 
-export default function CreateClient() {
-  const [pin, setPin] = React.useState('')
-
+export default function CreateEmployee() {
   const form = useForm<z.infer<typeof ClientSchema>>({
     resolver: zodResolver(ClientSchema),
     defaultValues: {
@@ -139,28 +134,20 @@ export default function CreateClient() {
       postal_code: '',
       // bank_uuid: "",
       // employee_uuid: "",
-      work_related_tags: [],
-      declared_income: 0,
+      position: '',
+      since: '',
+      salary: 0,
     },
   })
 
   const onSubmit = async (data: z.infer<typeof ClientSchema>) => {
-    const url = 'client/create'
-
-    const uuid = localStorage.getItem('uuid')
-    const bank_uuid = localStorage.getItem('bank_uuid')
-
-    const newData = {
-      ...data,
-      employee_uuid: uuid,
-      bank_uuid: bank_uuid,
-    }
+    const url = 'employee/create'
 
     toast({
       title: 'You submitted the following values:',
       description: (
         <pre className='mt-2 w-[340px] rounded-md bg-slate-950 p-4'>
-          <code className='text-white'>{JSON.stringify(newData, null, 2)}</code>
+          <code className='text-white'>{JSON.stringify(data, null, 2)}</code>
         </pre>
       ),
     })
@@ -171,7 +158,7 @@ export default function CreateClient() {
         'Content-Type': 'application/json',
       },
       // body: JSON.stringify(data),
-      body: JSON.stringify(newData),
+      body: JSON.stringify(data),
     })
       .then((res) => {
         console.log(res)
@@ -184,10 +171,9 @@ export default function CreateClient() {
       })
       .then((data) => {
         // Save token to local storage
-        setPin(data.pin)
         toast({
           title: 'Client created',
-          description: data.pin,
+          description: data.toString(),
         })
       })
       .catch((error) => {
@@ -203,8 +189,8 @@ export default function CreateClient() {
     <article className='flex flex-row items-center justify-center min-h-screen mt-[1rem]'>
       <Card className='w-[350px]'>
         <CardHeader>
-          <CardTitle>Create Client 👤</CardTitle>
-          <CardDescription>Create a new client.</CardDescription>
+          <CardTitle>Create Employee 👷</CardTitle>
+          <CardDescription>Create a new employee.</CardDescription>
         </CardHeader>
         <CardContent>
           <Form {...form}>
@@ -224,7 +210,7 @@ export default function CreateClient() {
                           {...field}
                         />
                       </FormControl>
-                      <FormDescription>Name of the client.</FormDescription>
+                      <FormDescription>Name of the employee.</FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -243,7 +229,9 @@ export default function CreateClient() {
                           {...field}
                         />
                       </FormControl>
-                      <FormDescription>Surname of the client.</FormDescription>
+                      <FormDescription>
+                        Surname of the employee.
+                      </FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -262,7 +250,9 @@ export default function CreateClient() {
                           {...field}
                         />
                       </FormControl>
-                      <FormDescription>Password of the client.</FormDescription>
+                      <FormDescription>
+                        Password of the employee.
+                      </FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -280,7 +270,9 @@ export default function CreateClient() {
                           {...field}
                         />
                       </FormControl>
-                      <FormDescription>Birthday of the client.</FormDescription>
+                      <FormDescription>
+                        Birthday of the employee.
+                      </FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -299,7 +291,7 @@ export default function CreateClient() {
                           {...field}
                         />
                       </FormControl>
-                      <FormDescription>Genre of the client.</FormDescription>
+                      <FormDescription>Genre of the employee.</FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -318,7 +310,7 @@ export default function CreateClient() {
                           {...field}
                         />
                       </FormControl>
-                      <FormDescription>Phone of the client.</FormDescription>
+                      <FormDescription>Phone of the employee.</FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -337,7 +329,7 @@ export default function CreateClient() {
                           {...field}
                         />
                       </FormControl>
-                      <FormDescription>Email of the client.</FormDescription>
+                      <FormDescription>Email of the employee.</FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -356,7 +348,7 @@ export default function CreateClient() {
                           {...field}
                         />
                       </FormControl>
-                      <FormDescription>DPI of the client.</FormDescription>
+                      <FormDescription>DPI of the employee.</FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -375,7 +367,7 @@ export default function CreateClient() {
                           {...field}
                         />
                       </FormControl>
-                      <FormDescription>Street of the client.</FormDescription>
+                      <FormDescription>Street of the employee.</FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -394,7 +386,7 @@ export default function CreateClient() {
                           {...field}
                         />
                       </FormControl>
-                      <FormDescription>City of the client.</FormDescription>
+                      <FormDescription>City of the employee.</FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -413,7 +405,7 @@ export default function CreateClient() {
                           {...field}
                         />
                       </FormControl>
-                      <FormDescription>State of the client.</FormDescription>
+                      <FormDescription>State of the employee.</FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -432,7 +424,9 @@ export default function CreateClient() {
                           {...field}
                         />
                       </FormControl>
-                      <FormDescription>Country of the client.</FormDescription>
+                      <FormDescription>
+                        Country of the employee.
+                      </FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -452,7 +446,7 @@ export default function CreateClient() {
                         />
                       </FormControl>
                       <FormDescription>
-                        Postal code of the client.
+                        Postal code of the employee.
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
@@ -498,20 +492,20 @@ export default function CreateClient() {
                 /> */}
                 <FormField
                   control={form.control}
-                  name='work_related_tags'
+                  name='position'
                   render={({ field }) => (
                     <FormItem className='flex flex-col space-y-1.5'>
-                      <FormLabel>Work related tags</FormLabel>
+                      <FormLabel>Position</FormLabel>
                       <FormControl>
                         <Input
-                          id='work_related_tags'
+                          id='Position'
                           type='text'
-                          placeholder='Work related tags'
+                          placeholder='Position'
                           {...field}
                         />
                       </FormControl>
                       <FormDescription>
-                        Work related tags of the client.
+                        Position of the employee.
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
@@ -519,26 +513,44 @@ export default function CreateClient() {
                 />
                 <FormField
                   control={form.control}
-                  name='declared_income'
+                  name='salary'
                   render={({ field }) => (
                     <FormItem className='flex flex-col space-y-1.5'>
-                      <FormLabel>Declared income</FormLabel>
+                      <FormLabel>Declared Salary</FormLabel>
                       <FormControl>
                         <Input
-                          id='declared_income'
+                          id='salary'
                           type='number'
-                          placeholder='Declared income'
+                          placeholder='Declared Salary'
                           {...field}
                         />
                       </FormControl>
                       <FormDescription>
-                        Declared income of the client.
+                        Declared Salary of the employee.
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
               </div>
+              <FormField
+                control={form.control}
+                name='since'
+                render={({ field }) => (
+                  <FormItem className='flex flex-col space-y-1.5'>
+                    <FormLabel>Since</FormLabel>
+                    <FormControl>
+                      <Input
+                        id='since'
+                        type='date'
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormDescription>Since of the employee.</FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               <Button
                 type='submit'
                 className='w-full mt-4'
@@ -547,9 +559,6 @@ export default function CreateClient() {
               </Button>
             </form>
           </Form>
-          <CardFooter>
-            {pin && <p className='text-center mt-[1rem]'>Pin: {pin}</p>}
-          </CardFooter>
         </CardContent>
       </Card>
       <Toaster />

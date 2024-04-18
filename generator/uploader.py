@@ -1,7 +1,7 @@
 from n4jconn import n4jconn
 
 uploadBank = """
-LOAD CSV WITH HEADERS FROM 'file:///generated_data/fake_bank.csv' AS row
+LOAD CSV WITH HEADERS FROM 'https://github.com/chamale-rac/fraud-detection/tree/main/generator/generated_data/fake_bank.csv' AS row
 CREATE (b:Bank {
     uuid: row.uuid,
     name: row.name,
@@ -14,7 +14,7 @@ CREATE (b:Bank {
 """
 
 uploadEmployee = """
-LOAD CSV WITH HEADERS FROM 'file:///generated_data/fake_employees.csv' AS row
+LOAD CSV WITH HEADERS FROM 'https://github.com/chamale-rac/fraud-detection/tree/main/generator/generated_data/fake_employees.csv' AS row
 MATCH (b:Bank {uuid: row.bank_uuid})
 CREATE (e:Employee {
     uuid: row.uuid,
@@ -35,7 +35,7 @@ CREATE (e:Employee {
 """
 
 uploadClient = """
-LOAD CSV WITH HEADERS FROM 'file:///generated_data/fake_clients.csv' AS row
+LOAD CSV WITH HEADERS FROM 'https://github.com/chamale-rac/fraud-detection/tree/main/generator/generated_data/fake_clients.csv' AS row
 MATCH (b:Bank {uuid: row.bank_uuid}), (e:Employee {uuid: row.employee_uuid})
 CREATE (c:Client {
     uuid: row.uuid,
@@ -60,7 +60,7 @@ CREATE (c:Client {
 """
 
 uploadAccount = """
-LOAD CSV WITH HEADERS FROM 'file:///generated_data/fake_accounts.csv' AS row
+LOAD CSV WITH HEADERS FROM 'https://github.com/chamale-rac/fraud-detection/tree/main/generator/generated_data/fake_accounts.csv' AS row
 MATCH (b:Bank {uuid: row.bank_uuid}), (c:Client {uuid: row.user_uuid})
 CREATE (a:Account {
   account_type: row.account_type,
@@ -75,7 +75,7 @@ CREATE (a:Account {
 """
 
 uploadSomeRelationsClients = """
-LOAD CSV WITH HEADERS FROM 'file:///generated_data/fake_clients.csv' AS row
+LOAD CSV WITH HEADERS FROM 'https://github.com/chamale-rac/fraud-detection/tree/main/generator/generated_data/fake_clients.csv' AS row
 MATCH (c:Client {uuid: row.uuid})
 MERGE (d:DPI {value: row.dpi})
 MERGE (e:Email {value: row.email})
@@ -88,7 +88,7 @@ CREATE (c)-[:HAS_ADDRESS]->(a)
 """
 
 uploadSomeRelationsEmployees = """
-LOAD CSV WITH HEADERS FROM 'file:///generated_data/fake_employees.csv' AS row
+LOAD CSV WITH HEADERS FROM 'https://github.com/chamale-rac/fraud-detection/tree/main/generator/generated_data/fake_employees.csv' AS row
 MATCH (e:Employee {uuid: row.uuid})
 MERGE (d:DPI {value: row.dpi})
 MERGE (e:Email {value: row.email})
